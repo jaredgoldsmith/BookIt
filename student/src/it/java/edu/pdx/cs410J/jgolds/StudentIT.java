@@ -17,6 +17,7 @@ class StudentIT extends InvokeMainTestCase {
   @Test
   void invokingMainWithNoArgumentsHasExitCodeOf1() {
     InvokeMainTestCase.MainMethodResult result = invokeMain(Student.class);
+    //hey
     assertThat(result.getExitCode(), equalTo(1));
   }
 
