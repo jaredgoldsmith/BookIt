@@ -2,9 +2,9 @@ package edu.pdx.cs410J.jgolds;
 
 import org.junit.jupiter.api.Test;
 
-import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Unit tests for the {@link Appointment} class.
@@ -16,13 +16,28 @@ public class AppointmentTest {
   @Test
   void getBeginTimeStringNeedsToBeImplemented() {
     Appointment appointment = new Appointment();
-    assertThrows(UnsupportedOperationException.class, appointment::getBeginTimeString);
+    String beginTime;
+    beginTime = appointment.getBeginTimeString();
+    //assertThrows(UnsupportedOperationException.class, appointment::getBeginTimeString);
   }
 
   @Test
+  void getEndTimeStringNeedsToBeImplemented(){
+    Appointment appointment = new Appointment();
+    String endTime = appointment.getEndTimeString();
+  }
+
+  @Test
+  void getDescriptionNeedsToBeImplemented() {
+    Appointment appointment = new Appointment();
+    String description = appointment.getDescription();
+  }
+  @Test
   void initiallyAllAppointmentsHaveTheSameDescription() {
     Appointment appointment = new Appointment();
-    assertThat(appointment.getDescription(), containsString("not implemented"));
+    assertThat(appointment.getDescription(), is(nullValue()));
+
+    //assertThat(appointment.getDescription(), containsString("not implemented"));
   }
 
   @Test
