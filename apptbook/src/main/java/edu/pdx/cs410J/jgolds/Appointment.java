@@ -3,18 +3,24 @@ package edu.pdx.cs410J.jgolds;
 import edu.pdx.cs410J.AbstractAppointment;
 
 public class Appointment extends AbstractAppointment {
+  protected String beginDate;
   protected String beginTime;
+  protected String endDate;
   protected String endTime;
   protected String description;
 
   public Appointment(){
+    this.beginDate = null;
     this.beginTime = null;
+    this.endDate = null;
     this.endTime = null;
     this.description = null;
   }
-  public Appointment(String begin, String end, String description){
-    this.beginTime = begin;
-    this.endTime = end;
+  public Appointment(String beginDate, String beginTime, String endDate, String endTime, String description){
+    this.beginDate = beginDate;
+    this.beginTime = beginTime;
+    this.endDate = endDate;
+    this.endTime = endTime;
     this.description = description;
   }
   @Override
