@@ -23,14 +23,13 @@ class Project1Test {
     try (
       InputStream readme = Project1.class.getResourceAsStream("README.txt")
     ) {
-      //assertThat(readme, not(nullValue()));
+      assertThat(readme, not(nullValue()));
       BufferedReader reader = new BufferedReader(new InputStreamReader(readme));
       String line = reader.readLine();
       while(line != null) {
         System.out.println(line);
         line = reader.readLine();
       }
-      //assertThat(line, containsString("This is a README file!"));
     }
   }
 
@@ -73,6 +72,12 @@ class Project1Test {
   void checkEndDates(){
     Project1 obj = new Project1();
     String endDate = "3/13/2000";
+    obj.parseDates(endDate);
+    endDate = "3/31/2000";
+    obj.parseDates(endDate);
+    endDate = "03/31/2000";
+    obj.parseDates(endDate);
+    endDate = "02/28/2000";
     obj.parseDates(endDate);
   }
 

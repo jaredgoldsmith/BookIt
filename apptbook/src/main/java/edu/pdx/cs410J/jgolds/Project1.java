@@ -13,12 +13,23 @@ public class Project1 {
   public static final String INCORRECT_TIME_FORMATTING = "Incorrect time formatting";
   public static final String NOT_ENOUGH_ARGS = "There are not enough arguments, there should be at least 6, " +
           "not including the -print or -README arguments";
-
   /**
-   * The main class for the CS410J appointment book Project
+   * Creates a new <code>Project1</code>
+   *
+   * @param args
+   *        1. The owner of AppointmentBook, made up of a collection of Appointments
+   *        2. Description of the appointment
+   *        3. Date of the start of the appointment
+   *        4. Time of the start of the appointment
+   *        5. Date of the end of the appointment
+   *        6. Time of the end of the appointment
+   * Optional parameters of -print and -README can precede the other arguments. -print will
+   * display the toString method from AbstractAppointment class. -README will read the contents
+   * of the README.txt file and exit once complete
    */
   public static void main(String[] args) throws IOException{
     Appointment appointment = new Appointment();
+    AppointmentBook appointmentBook = new AppointmentBook();
     Project1 project = new Project1();
     String owner = null;
     String description = null;
@@ -37,6 +48,7 @@ public class Project1 {
         print = true;
       else if(owner == null) {
         owner = arg;
+        appointmentBook.addOwner(owner);
       }
       else if(description == null) {
         description = arg;
@@ -59,6 +71,7 @@ public class Project1 {
         project.parseTimes(arg);
         endTime = arg;
         appointment.addEndTime(endDate,endTime);
+        appointmentBook.addAppointment(appointment);
       }
       else{
         System.err.println("There are too many arguments!");
@@ -84,7 +97,8 @@ public class Project1 {
   }
 
   /**
-   * The main class for the CS410J appointment book Project
+   * Takes in a String that should be beginTime or endTime and makes sure it is
+   * the correct format, i.e. 3:33 or 13:45 would both be appropriate
    */
   public void parseTimes(String time){
     char []array = new char[time.length()];
@@ -125,10 +139,9 @@ public class Project1 {
   }
 
   /**
-   * The main class for the CS410J appointment book Project
+   * Takes in a String that should be beginDate or endDate and makes sure it is
+   * the correct format, i.e. 12/03/2020 or 05/3/2021 would both be appropriate
    */
-  //Turn the date String into a character array and parse the different possible scenerios
-  //that will work and that won't work
   public void parseDates(String date) {
     if(date == null)
     {
@@ -165,6 +178,18 @@ public class Project1 {
             continue;
           else if(i == 2)
             checkZeroThroughThree(array[i], INCORRECT_DATE_FORMATTING);
+          else if(i == 3){
+            if(array[2] == '3') {
+              if (array[0] == '4' || array[0] == '6' || array[0] == '9') {
+                if (array[i] != '0')
+                  incorrectDateFormatting();
+              }
+                else if (array[0] == '2')
+                  incorrectDateFormatting();
+                else
+                  checkZeroAndOne(array[i], INCORRECT_DATE_FORMATTING);
+            }
+          }
           else {
             checkZeroThroughNine(array[i], INCORRECT_DATE_FORMATTING);
           }
@@ -209,6 +234,18 @@ public class Project1 {
           continue;
         else if(i == 3)
           checkZeroThroughThree(array[i], INCORRECT_DATE_FORMATTING);
+        else if(i == 4){
+          if(array[3] == '3') {
+            if (array[0] == '0' && array[1] == '2')
+              incorrectDateFormatting();
+            else if((array[0] == '0' && (array[1] == '4' || array[1] == '6' || array[1] == '9')) || (array[0] == '1' && array[1] == '1')){
+              if(array[i] != '0')
+                incorrectDateFormatting();
+            }
+            else
+              checkZeroAndOne(array[i], INCORRECT_DATE_FORMATTING);
+          }
+        }
         else
           checkZeroThroughNine(array[i], INCORRECT_DATE_FORMATTING);
       }
@@ -218,7 +255,7 @@ public class Project1 {
   }
 
   /**
-   * The main class for the CS410J appointment book Project
+   * Prints out the constant string indicating incorrect date format and exits
    */
   private static void incorrectDateFormatting(){
     System.err.println(INCORRECT_DATE_FORMATTING);
@@ -226,7 +263,7 @@ public class Project1 {
   }
 
   /**
-   * The main class for the CS410J appointment book Project
+   * Prints out the constant string indicating incorrect time format and exits
    */
   private static void incorrectTimeFormatting(){
     System.err.println(INCORRECT_TIME_FORMATTING);
@@ -234,7 +271,7 @@ public class Project1 {
   }
 
   /**
-   * The main class for the CS410J appointment book Project
+   * Prints out the error message sent in as an argument and exits program
    */
   private static void errorMessage(String message){
     System.err.println(message);
@@ -242,7 +279,8 @@ public class Project1 {
   }
 
   /**
-   * The main class for the CS410J appointment book Project
+   * Checks the character to make sure it is 0 through 5. If it fails, it will print
+   * the error message sent in as an argument and exits program
    */
   private static void checkZeroThroughFive(char ch, String message){
     if(ch < '0' || ch > '5')
@@ -250,7 +288,8 @@ public class Project1 {
   }
 
   /**
-   * The main class for the CS410J appointment book Project
+   * Checks the character to make sure it is 0 or 1. If it fails, it will print
+   * the error message sent in as an argument and exits program
    */
   private static void checkZeroAndOne(char ch, String message){
     if(ch < '0' || ch > '1')
@@ -258,7 +297,8 @@ public class Project1 {
   }
 
   /**
-   * The main class for the CS410J appointment book Project
+   * Checks the character to make sure it is 0 through 2. If it fails, it will print
+   * the error message sent in as an argument and exits program
    */
   private static void checkZeroThroughTwo(char ch, String message){
     if(ch < '0' || ch > '2')
@@ -266,7 +306,8 @@ public class Project1 {
   }
 
   /**
-   * The main class for the CS410J appointment book Project
+   * Checks the character to make sure it is 0 through 3. If it fails, it will print
+   * the error message sent in as an argument and exits program
    */
   private static void checkZeroThroughThree(char ch, String message){
     if(ch < '0' || ch > '3')
@@ -274,7 +315,8 @@ public class Project1 {
   }
 
   /**
-   * The main class for the CS410J appointment book Project
+   * Checks the character to make sure it is 1 through 9. If it fails, it will print
+   * the error message sent in as an argument and exits program
    */
   private static void checkOneThroughNine(char ch, String message){
     if(ch < '1' || ch > '9')
@@ -282,7 +324,8 @@ public class Project1 {
   }
 
   /**
-   * The main class for the CS410J appointment book Project
+   * Checks the character to make sure it is 0 through 9. If it fails, it will print
+   * the error message sent in as an argument and exits program
    */
   private static void checkZeroThroughNine(char ch, String message){
     if(ch < '0' || ch > '9')
@@ -290,7 +333,8 @@ public class Project1 {
   }
 
   /**
-   * The main class for the CS410J appointment book Project
+   * Reads from the README.txt until there are no more lines to read. If there is no
+   * file, error statement will print and will exit program
    */
   private static void displayReadMe() throws IOException {
     try (
