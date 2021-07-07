@@ -164,7 +164,7 @@ public class AboutStrings {
         } catch (Exception e) {
             Exception a = new Exception();
             a.getClass();
-            assertEquals(e.getClass(), a.getClass());
+            assertEquals(e.getClass(), java.util.MissingFormatArgumentException.class);
             assertEquals(e.getMessage(), "Format specifier '%s'");
         }
     }

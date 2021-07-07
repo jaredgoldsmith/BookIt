@@ -1,10 +1,13 @@
 package edu.pdx.cs410J.jgolds;
 
 import java.util.Collection;
+import java.util.*;
+import edu.pdx.cs410J.AbstractAppointmentBook;
+import edu.pdx.cs410J.AbstractAppointment;
 
-public class AppointmentBook {
+public class AppointmentBook extends AbstractAppointmentBook<AbstractAppointment>{
    protected String owner;
-   protected Collection<Appointment> appointments;
+   protected Collection<AbstractAppointment> appointments = new ArrayList<>();
 
    public AppointmentBook (){
       this.owner = null;
@@ -16,11 +19,11 @@ public class AppointmentBook {
       return owner;
    }
 
-   public Collection<Appointment> getAppointments(){
+   public Collection<AbstractAppointment> getAppointments(){
       return appointments;
    }
 
-   public void addAppointment(Appointment appointment){
+   public void addAppointment(AbstractAppointment appointment){
       appointments.add(appointment);
    }
 }

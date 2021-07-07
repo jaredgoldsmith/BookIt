@@ -16,6 +16,6 @@ public class AppointmentBookTest {
     @Test
     void getAppointmentsNeedsToBeImplemented() {
         AppointmentBook appointmentBook = new AppointmentBook();
-        Collection<Appointment> appointments = appointmentBook.getAppointments();
+        //Collection<Appointment> appointments = appointmentBook.getAppointments();
     }
 }
