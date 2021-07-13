@@ -17,15 +17,22 @@ public class TextParser implements AppointmentBookParser {
     @Override
     public AppointmentBook parse()throws ParserException {
         //AbstractAppointmentBook apptbook= (AbstractAppointmentBook) in.readObject();
-
+        File file = new File(fileName);
+        if(!file.exists()){
+            System.err.println("Cannot parse an empty file.");
+            System.exit(1);
+        }
         BufferedReader br = null;
         try{
             //ObjectInputStream in = new ObjectInputStream(new FileInputStream(fileName));
             //AppointmentBook apptbook = (AppointmentBook) in.readObject();
-            //ParserException e = null;
+            ParserException e = null;
            // if(apptbook == null)
             //    throw(e);
             //if(br.readLine() == null)
+            if(!file.exists()){
+                throw(e);
+            }
             br = new BufferedReader(new FileReader(fileName));
             AppointmentBook apptbook = new AppointmentBook();
             Appointment appt = new Appointment();
@@ -67,6 +74,10 @@ public class TextParser implements AppointmentBookParser {
             if(br != null);
                 br.close();
             return apptbook;
+        }
+        catch(ParserException e){
+           System.err.println("Cannot parse an empty file");
+           System.exit(0);
         }
         catch (IOException e){
             System.err.println("The file you were looking for does not exist!");

@@ -1,6 +1,5 @@
 package edu.pdx.cs410J.jgolds;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.BufferedReader;
@@ -8,7 +7,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
@@ -16,7 +16,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
  * from <code>Project1IT</code> which is an integration test (and can handle the calls
  * to {@link System#exit(int)} and the like.
  */
-class Project1Test {
+class Project2Test {
 
   @Test
   void readmeCanBeReadAsResource() throws IOException {
@@ -35,7 +35,7 @@ class Project1Test {
 
   @Test
   void checkBeginTimes(){
-    Project1 obj = new Project1();
+    Project2 obj = new Project2();
     String beginTime = "7:33";
     obj.parseTimes(beginTime);
     beginTime = "07:45";
@@ -46,7 +46,7 @@ class Project1Test {
 
   @Test
   void checkEndTimes(){
-    Project1 obj = new Project1();
+    Project2 obj = new Project2();
     String endTime = "13:44";
     obj.parseTimes(endTime);
     endTime = "07:45";
@@ -57,7 +57,7 @@ class Project1Test {
 
   @Test
   void checkBeginDates(){
-    Project1 obj = new Project1();
+    Project2 obj = new Project2();
     String beginDate = "07/13/2000";
     obj.parseDates(beginDate);
     beginDate = "7/13/2000";
@@ -70,7 +70,7 @@ class Project1Test {
 
   @Test
   void checkEndDates(){
-    Project1 obj = new Project1();
+    Project2 obj = new Project2();
     String endDate = "3/13/2000";
     obj.parseDates(endDate);
     endDate = "3/31/2000";

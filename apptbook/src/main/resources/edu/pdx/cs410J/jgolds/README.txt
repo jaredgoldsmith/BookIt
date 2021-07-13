@@ -2,6 +2,7 @@ Jared Goldsmith jgolds@pdx.edu
 Project 2: apptbook
 CS510: Advanced Programming in Java
 
+
 For this project, we have made it so that an appointment object can be created using command line
 arguments. An appointment consists of a description of the appointment, the beginning date and time
 of the appointment, as well as the end date and time of the appointment. For this project, the default

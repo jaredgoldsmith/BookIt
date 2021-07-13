@@ -1,7 +1,7 @@
 package edu.pdx.cs410J.jgolds;
 
-
 import edu.pdx.cs410J.ParserException;
+//import static org.hamcrest.Matchers.equalTo;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
