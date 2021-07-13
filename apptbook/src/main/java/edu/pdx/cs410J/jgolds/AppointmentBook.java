@@ -9,9 +9,9 @@ import edu.pdx.cs410J.AbstractAppointment;
  * Creates an AppointmentBook, which inherits AbstractAppointmentBook. Contains
  * a String to represent the owner, and a Collection of appointments.
  */
-public class AppointmentBook extends AbstractAppointmentBook<AbstractAppointment>{
+public class AppointmentBook extends AbstractAppointmentBook<Appointment>{
    protected String owner;
-   protected Collection<AbstractAppointment> appointments = new ArrayList<>();
+   protected ArrayList<Appointment> appointments = new ArrayList<Appointment>();
    public AppointmentBook(){
       this.owner = null;
       //this.appointments = null;
@@ -41,7 +41,7 @@ public class AppointmentBook extends AbstractAppointmentBook<AbstractAppointment
     * @return
     *    returns the list of appointments stored in the object
     */
-   public Collection<AbstractAppointment> getAppointments(){
+   public Collection<Appointment> getAppointments(){
       return appointments;
    }
 
@@ -50,8 +50,8 @@ public class AppointmentBook extends AbstractAppointmentBook<AbstractAppointment
     * @param appointment
     *    adds an appointment to the list of appointments stored in the object
     */
-   public void addAppointment(AbstractAppointment appointment){
-      appointments.add(appointment);
+   public void addAppointment(Appointment appointment){
+      this.appointments.add(appointment);
    }
 
    /**

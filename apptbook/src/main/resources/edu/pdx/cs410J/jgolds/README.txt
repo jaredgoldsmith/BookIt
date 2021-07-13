@@ -1,5 +1,5 @@
 Jared Goldsmith jgolds@pdx.edu
-Project 1: apptbook
+Project 2: apptbook
 CS510: Advanced Programming in Java
 
 For this project, we have made it so that an appointment object can be created using command line
