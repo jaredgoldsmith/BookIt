@@ -12,8 +12,8 @@ import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
- * A unit test for code in the <code>Project1</code> class.  This is different
- * from <code>Project1IT</code> which is an integration test (and can handle the calls
+ * A unit test for code in the <code>Project2</code> class.  This is different
+ * from <code>Project2IT</code> which is an integration test (and can handle the calls
  * to {@link System#exit(int)} and the like.
  */
 class Project2Test {
@@ -21,7 +21,7 @@ class Project2Test {
   @Test
   void readmeCanBeReadAsResource() throws IOException {
     try (
-      InputStream readme = Project1.class.getResourceAsStream("README.txt")
+      InputStream readme = Project2.class.getResourceAsStream("README.txt")
     ) {
       assertThat(readme, not(nullValue()));
       BufferedReader reader = new BufferedReader(new InputStreamReader(readme));
@@ -80,6 +80,4 @@ class Project2Test {
     endDate = "02/28/2000";
     obj.parseDates(endDate);
   }
-
-
 }

@@ -1,9 +1,7 @@
 package edu.pdx.cs410J.jgolds;
 
 import org.junit.jupiter.api.Test;
-
-import java.util.Collection;
-
+//import java.util.Collection;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
 
@@ -46,6 +44,7 @@ public class AppointmentBookTest {
         assertThat(appointmentBook.getOwnerName(), equalTo("Buck"));
 
     }
+
     private AppointmentBook getApp() {
         AppointmentBook appointmentBook = new AppointmentBook("Buck");
         Appointment appointment = new Appointment();

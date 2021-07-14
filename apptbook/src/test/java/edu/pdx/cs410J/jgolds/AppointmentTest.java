@@ -2,8 +2,8 @@ package edu.pdx.cs410J.jgolds;
 
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
-import static java.util.Collections.emptyList;
+//import java.util.List;
+//import static java.util.Collections.emptyList;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -23,7 +23,6 @@ public class AppointmentTest {
     appointment.addBeginTime("3/12/2020", "3:33");
     String beginTime = "3/12/2020 3:33";
     assertThat(appointment.getBeginTimeString(), equalTo(beginTime));
-    //assertThrows(UnsupportedOperationException.class, appointment::getBeginTimeString);
   }
 
   @Test
@@ -41,12 +40,11 @@ public class AppointmentTest {
     String description = "Fancy meeting for fancy folks";
     assertThat(appointment.getDescription(), equalTo(description));
   }
+
   @Test
   void initiallyAllAppointmentsHaveTheSameDescription() {
     Appointment appointment = new Appointment();
     assertThat(appointment.getDescription(), is(nullValue()));
-
-    //assertThat(appointment.getDescription(), containsString("not implemented"));
   }
 
   @Test
@@ -63,6 +61,7 @@ public class AppointmentTest {
     return appointment;
 
   }
+
   @Test
   void appointmentStringTesting(){
     Appointment appointment = new Appointment();
@@ -101,5 +100,4 @@ public class AppointmentTest {
     Appointment appointment = getMeet();
     assertThat(appointment.toString(), containsString("5:11"));
   }
-
 }

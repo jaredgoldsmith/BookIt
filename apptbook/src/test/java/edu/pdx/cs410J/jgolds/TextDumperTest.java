@@ -1,14 +1,14 @@
 package edu.pdx.cs410J.jgolds;
-import edu.pdx.cs410J.ParserException;
+//import edu.pdx.cs410J.ParserException;
 import org.junit.jupiter.api.Test;
 import static org.hamcrest.Matchers.equalTo;
-import javax.swing.text.html.parser.Parser;
+//import javax.swing.text.html.parser.Parser;
 import java.io.IOException;
-import java.io.StringWriter;
+//import java.io.StringWriter;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.equalTo;
+//import static org.hamcrest.Matchers.equalTo;
 public class TextDumperTest {
 
     @Test
@@ -16,14 +16,8 @@ public class TextDumperTest {
         String owner = "Owner";
         AppointmentBook book = new AppointmentBook(owner);
         String fileName = "text.txt";
-
-        //StringWriter sw = new StringWriter();
         TextDumper dumper = new TextDumper(fileName);
         dumper.dump(book);
-
-        //sw.flush();
-
-        //String dumpedText = sw.toString();
         String dumpedText = book.getOwnerName();
         assertThat(dumpedText, containsString(owner));
     }
@@ -41,17 +35,16 @@ public class TextDumperTest {
         dumper.dump(apptbook);
         TextParser parser = new TextParser("text.txt");
         AppointmentBook appt2 = new AppointmentBook();
-        try {
-            appt2 = parser.parse();
-
-        }
-        catch(ParserException e){
-            System.err.println("Unable to parse correctly");
-            System.exit(0);
-
-        }
-
-
+        appt2 = parser.parse();
+        //ParserException e;
+        //try {
+         //   appt2 = parser.parse();
+         //   throw(e);
+        //}
+       // catch(ParserException e){
+        //    System.err.println("Unable to parse correctly");
+         //   System.exit(0);
+        //}
         assertThat(apptbook.getOwnerName(), equalTo(appt2.getOwnerName()));
     }
 }

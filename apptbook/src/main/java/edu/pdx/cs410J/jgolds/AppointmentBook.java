@@ -3,7 +3,7 @@ package edu.pdx.cs410J.jgolds;
 import java.util.Collection;
 import java.util.*;
 import edu.pdx.cs410J.AbstractAppointmentBook;
-import edu.pdx.cs410J.AbstractAppointment;
+//import edu.pdx.cs410J.AbstractAppointment;
 
 /**
  * Creates an AppointmentBook, which inherits AbstractAppointmentBook. Contains
@@ -11,7 +11,7 @@ import edu.pdx.cs410J.AbstractAppointment;
  */
 public class AppointmentBook extends AbstractAppointmentBook<Appointment>{
    protected String owner;
-   protected ArrayList<Appointment> appointments = new ArrayList<Appointment>();
+   protected ArrayList<Appointment> appointments = new ArrayList<>();
    public AppointmentBook(){
       this.owner = null;
       //this.appointments = null;

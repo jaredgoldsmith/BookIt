@@ -1,12 +1,13 @@
 package edu.pdx.cs410J.jgolds;
 
-import edu.pdx.cs410J.ParserException;
+//import edu.pdx.cs410J.ParserException;
 //import static org.hamcrest.Matchers.equalTo;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.*;
+import java.lang.Character;
 
 /**
  * The main class for the CS410J appointment book Project
@@ -16,8 +17,10 @@ public class Project2 {
   public static final String INCORRECT_TIME_FORMATTING = "Incorrect time formatting";
   public static final String NOT_ENOUGH_ARGS = "There are not enough arguments, there should be at least 6, " +
           "not including the -print or -README arguments";
+  public static final String DESCRIPTION_ARGUMENT_IS_MISSING_FROM_COMMAND_LINE = "Description argument is missing from command line";
+
   /**
-   * Creates a new <code>Project1</code>
+   * Creates a new <code>Project2</code>
    *
    * @param args
    *        1. The owner of AppointmentBook, made up of a collection of Appointments
@@ -26,16 +29,19 @@ public class Project2 {
    *        4. Time of the start of the appointment
    *        5. Date of the end of the appointment
    *        6. Time of the end of the appointment
-   * Optional parameters of -print and -README can precede the other arguments. -print will
+   * Optional parameters of -print, -README, and -textFile file can precede the other arguments. -print will
    * display the toString method from AbstractAppointment class. -README will read the contents
-   * of the README.txt file and exit once complete
+   * of the README.txt file and exit once complete. -textFile file will read and write the appointment book
+   * into an external text file defined by the argument following textFile
    */
-  public static void main(String[] args) throws IOException, ParserException{
+  public static void main(String[] args) throws IOException
+         // ParserException
+          {
     Appointment appointment = new Appointment();
     AppointmentBook appointmentBook = new AppointmentBook();
     AppointmentBook appt2;
-    String filename = "text.txt";
-    File file = new File(filename);
+    String filename = null;
+    File file = null;
     boolean textFile = false;
     Project2 project = new Project2();
     String owner = null;
@@ -60,7 +66,14 @@ public class Project2 {
       }
       else if(textFile){
         textFile = false;
-        file = new File(arg);
+        filename = arg;
+        if(filename.endsWith("txt"))
+          file = new File(arg);
+        else{
+          System.err.println("This is not a text file. The -textFile command needs to be followed by a " +
+                  "text file, which should end in .txt.");
+          System.exit(1);
+        }
       }
       else if(owner == null) {
         owner = arg;
@@ -68,7 +81,7 @@ public class Project2 {
       }
       else if(description == null) {
         if(!project.checkDescription(arg)){
-          System.err.println("Description argument is missing from command line");
+          System.err.println(DESCRIPTION_ARGUMENT_IS_MISSING_FROM_COMMAND_LINE);
           System.exit(1);
         }
         else {
@@ -124,7 +137,7 @@ public class Project2 {
         TextParser textparse = new TextParser(filename);
         appt2 = textparse.parse();
         if(!appt2.owner.equals(appointmentBook.owner)){
-          System.err.println("The owner of the appointmentbook is not the same as the one on file.");
+          System.err.println("The owner of the appointment book is not the same as the one on file.");
           System.exit(1);
         }
         appt2.addAppointment(appointment);
@@ -132,9 +145,9 @@ public class Project2 {
         TextDumper textdump = new TextDumper(filename);
         textdump.dump(appt2);
       }
-      if (print) {
-        System.out.println(appointment.toString());
-      }
+    }
+    if (print) {
+      System.out.println(appointment.toString());
     }
     System.exit(1);
   }
@@ -148,11 +161,12 @@ public class Project2 {
     boolean doesDescriptionHaveAlphabet = false;
     for(int i = 0; i < description.length(); ++i)
       descriptionArray[i] = description.charAt(i);
-    for(int i = 0; i < description.length(); ++i)
-      System.out.println(descriptionArray[i]);
     for(int i = 0; i < description.length(); ++i){
-      if(descriptionArray[i] >= 'A' && descriptionArray[i] <= 'z')
+      //if(descriptionArray[i] >= 'A' && descriptionArray[i] <= 'z') {
+      if(Character.isLetter(descriptionArray[i])){
         doesDescriptionHaveAlphabet = true;
+        break;
+      }
     }
     return doesDescriptionHaveAlphabet;
   }

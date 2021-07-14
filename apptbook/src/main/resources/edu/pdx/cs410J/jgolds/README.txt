@@ -1,8 +1,10 @@
 Jared Goldsmith jgolds@pdx.edu
-Project 2: apptbook
+Project 2: Storing an Appointment book in a text file
 CS510: Advanced Programming in Java
+Instructor: David Whitlock
 
 
+For this project, we were tasked with making an addition to our appointment book program
 For this project, we have made it so that an appointment object can be created using command line
 arguments. An appointment consists of a description of the appointment, the beginning date and time
 of the appointment, as well as the end date and time of the appointment. For this project, the default
