@@ -1,7 +1,5 @@
 package edu.pdx.cs410J.jgolds;
 
-//import edu.pdx.cs410J.ParserException;
-//import static org.hamcrest.Matchers.equalTo;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -10,13 +8,13 @@ import java.io.*;
 import java.lang.Character;
 
 /**
- * The main class for the CS410J appointment book Project
+ * The main class for Project2 for CS410 Advanced Programming in Java
  */
 public class Project2 {
   public static final String INCORRECT_DATE_FORMATTING = "Incorrect date formatting";
   public static final String INCORRECT_TIME_FORMATTING = "Incorrect time formatting";
   public static final String NOT_ENOUGH_ARGS = "There are not enough arguments, there should be at least 6, " +
-          "not including the -print or -README arguments";
+          "not including the -print, -README, or -textFile file arguments";
   public static final String DESCRIPTION_ARGUMENT_IS_MISSING_FROM_COMMAND_LINE = "Description argument is missing from command line";
 
   /**
@@ -34,9 +32,8 @@ public class Project2 {
    * of the README.txt file and exit once complete. -textFile file will read and write the appointment book
    * into an external text file defined by the argument following textFile
    */
-  public static void main(String[] args) throws IOException
-         // ParserException
-          {
+
+  public static void main(String[] args) throws IOException {
     Appointment appointment = new Appointment();
     AppointmentBook appointmentBook = new AppointmentBook();
     AppointmentBook appt2;
@@ -141,7 +138,6 @@ public class Project2 {
           System.exit(1);
         }
         appt2.addAppointment(appointment);
-    //    System.out.println("Owner from main is: " + appt2.owner);
         TextDumper textdump = new TextDumper(filename);
         textdump.dump(appt2);
       }
@@ -153,8 +149,9 @@ public class Project2 {
   }
 
   /**
-   * Takes in a String that should be beginTime or endTime and makes sure it is
-   * the correct format, i.e. 3:33 or 13:45 would both be appropriate
+   * Takes in a String that checks to make sure that there are letters so we know that
+   * the intended argument was for the description. If there are no letters, then we
+   * know that the description was likely left out of the argument list.
    */
   public boolean checkDescription(String description){
     char []descriptionArray = new char[description.length()];
@@ -162,7 +159,6 @@ public class Project2 {
     for(int i = 0; i < description.length(); ++i)
       descriptionArray[i] = description.charAt(i);
     for(int i = 0; i < description.length(); ++i){
-      //if(descriptionArray[i] >= 'A' && descriptionArray[i] <= 'z') {
       if(Character.isLetter(descriptionArray[i])){
         doesDescriptionHaveAlphabet = true;
         break;
@@ -170,6 +166,11 @@ public class Project2 {
     }
     return doesDescriptionHaveAlphabet;
   }
+
+  /**
+   * Takes in a String that should be beginTime or endTime and makes sure it is
+   * the correct format, i.e. 3:33 or 13:45 would both be appropriate
+   */
   public void parseTimes(String time){
     char []array = new char[time.length()];
     for (int i = 0; i < time.length(); ++i){

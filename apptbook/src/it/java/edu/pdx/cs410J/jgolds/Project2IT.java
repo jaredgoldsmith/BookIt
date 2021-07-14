@@ -7,9 +7,11 @@ import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 
+
 /**
  * Integration tests for the {@link Project2} main class.
  */
+
 class Project2IT extends InvokeMainTestCase {
   /**
    * Invokes the main method of {@link Project2} with the given arguments.
@@ -25,7 +27,6 @@ class Project2IT extends InvokeMainTestCase {
   void testNoCommandLineArguments() {
     MainMethodResult result = invokeMain(Project2.class);
     assertThat(result.getExitCode(), equalTo(1));
-    //assertThat(result.getTextWrittenToStandardError(), containsString("Missing command line arguments"));
   }
 
   @Test
@@ -39,11 +40,13 @@ class Project2IT extends InvokeMainTestCase {
     MainMethodResult result = invokeMain("Buck");
     assertThat(result.getTextWrittenToStandardError(), containsString(Project2.NOT_ENOUGH_ARGS));
   }
+
   @Test
   void missingDescriptionWithOtherArgs() {
     MainMethodResult result = invokeMain(Project2.class, "Buck", "3/13/2020", "3:13", "03/13/2021", "4:13");
     assertThat(result.getTextWrittenToStandardError(), containsString(Project2.DESCRIPTION_ARGUMENT_IS_MISSING_FROM_COMMAND_LINE));
   }
+
   @Test
   void missingBeginDate() {
     MainMethodResult result = invokeMain(Project2.class, "Buck", "Fancy meet");
@@ -72,6 +75,7 @@ class Project2IT extends InvokeMainTestCase {
     MainMethodResult result = invokeMain(Project2.class, "Buck", "Fancy meet", "3/333/22", "3:33", "5/5/2020", "4:44");
     assertThat(result.getTextWrittenToStandardError(), containsString(Project2.INCORRECT_DATE_FORMATTING));
   }
+
   @Test
   void wrongTimeFormat() {
     MainMethodResult result = invokeMain(Project2.class, "Buck", "Fancy meet", "4/20/2020", "33:33", "5/5/2020", "4:44");

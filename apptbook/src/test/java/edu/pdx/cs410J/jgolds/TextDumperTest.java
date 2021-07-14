@@ -1,14 +1,11 @@
 package edu.pdx.cs410J.jgolds;
-//import edu.pdx.cs410J.ParserException;
+
 import org.junit.jupiter.api.Test;
 import static org.hamcrest.Matchers.equalTo;
-//import javax.swing.text.html.parser.Parser;
 import java.io.IOException;
-//import java.io.StringWriter;
-
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
-//import static org.hamcrest.Matchers.equalTo;
+
 public class TextDumperTest {
 
     @Test
@@ -36,15 +33,6 @@ public class TextDumperTest {
         TextParser parser = new TextParser("text.txt");
         AppointmentBook appt2 = new AppointmentBook();
         appt2 = parser.parse();
-        //ParserException e;
-        //try {
-         //   appt2 = parser.parse();
-         //   throw(e);
-        //}
-       // catch(ParserException e){
-        //    System.err.println("Unable to parse correctly");
-         //   System.exit(0);
-        //}
         assertThat(apptbook.getOwnerName(), equalTo(appt2.getOwnerName()));
     }
 }

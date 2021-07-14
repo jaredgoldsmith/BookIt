@@ -3,22 +3,10 @@ package edu.pdx.cs410J.jgolds;
 import edu.pdx.cs410J.ParserException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
-
 import java.io.*;
-
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
 public class TextParserTest {
-
-    @Test
-    void emptyFileCannotBeParsed() {
-        ParserException e = null;
-        String noFile = "empty.txt";
-        TextParser parser = new TextParser(noFile);
-    }
 
     @Test
     void appointmentBookOwnerCanBeDumpedAndParsed() throws IOException, ParserException {

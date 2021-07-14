@@ -4,16 +4,15 @@ CS510: Advanced Programming in Java
 Instructor: David Whitlock
 
 
-For this project, we were tasked with making an addition to our appointment book program
-For this project, we have made it so that an appointment object can be created using command line
-arguments. An appointment consists of a description of the appointment, the beginning date and time
-of the appointment, as well as the end date and time of the appointment. For this project, the default
-constructor is used. We can add the description with the addDescription function, which takes in one
-string and copies it to the description data member of the object. We can add the beginning date and time
-with the addBeginTime function, which takes in two string arguments, the first for the begin date and
-the second for the begin time. This function concatenates these two arguments and copies them to the
-beginTime data member of the object. There is also an addEndTime function, which is the same as the
-addBeginTime, except will copy these arguments to the endTime data member.
-In this project, there is also an appointmentBook class, which contains an owner and a collection of
-appointments as its data members. Although the inherited functions are implemented in this class, this
-class is not used in this project.
+For this project, we were tasked with making an additional optional command to our appointment book program.
+The additional command is -textFile file, file being the name of the text file. If this command is present,
+then the program will write the appointment book created from Project 1 and add it to the text file. If the
+text file already exists with an appointment book in it, then it will parse through the text file, using the
+parse method from the TextParser object, which will return the appointment book within the text file. The
+program will then add the new appointment created from the command line arguments to the appointment book and
+will lastly add the appointment book back to the text file using the TextDumper object, specifically the dump
+function which takes the appointment book as an argument. The program will return an error message if the owner
+of the appointment book contained in the file is different than the owner argument coming in from the command
+line. All the other error checking will occur from Program 1, as well, so the correct date and time formatting
+need persist, as well as the mandatory six arguments in this order: owner, begin date of appointment, begin time
+of appointment, end date of appointment, and end time of appointment.
