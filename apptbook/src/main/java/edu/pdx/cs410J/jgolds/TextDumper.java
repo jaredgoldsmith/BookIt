@@ -31,16 +31,21 @@ public class TextDumper implements AppointmentBookDumper<AppointmentBook> {
     public void dump(AppointmentBook apptBook)
     {
         try {
-            Appointment appt;
+            //Appointment appt;
             BufferedWriter bw = new BufferedWriter(new FileWriter(fileName));
 
             bw.write(apptBook.owner + "\n");
+            //System.out.println("Dump Start");
             for(int i = 0; i < apptBook.appointments.size(); ++i){
-                    appt = apptBook.appointments.get(i);
-                    bw.write(appt.description+"\n");
-                    bw.write(appt.beginTime + "\n");
-                    bw.write(appt.endTime + "\n");
+                    //appt = apptBook.appointments.get(i);
+                    bw.write(apptBook.appointments.get(i).description+"\n");
+                    //System.out.println(apptBook.appointments.get(i).description);
+                    bw.write(apptBook.appointments.get(i).beginTime + "\n");
+                //System.out.println(apptBook.appointments.get(i).beginTime);
+                bw.write(apptBook.appointments.get(i).endTime + "\n");
+                //System.out.println(apptBook.appointments.get(i).endTime);
             }
+            //System.out.println("Dump End");
             bw.close();
         }
         catch(IOException e){

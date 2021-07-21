@@ -65,7 +65,7 @@
         <configuration>
           <archive>
             <manifest>
-              <mainClass>edu.pdx.cs410J.jgolds.Project2</mainClass>
+              <mainClass>edu.pdx.cs410J.jgolds.Project3</mainClass>
             </manifest>
           </archive>
         </configuration>

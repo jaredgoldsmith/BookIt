@@ -12,16 +12,16 @@ import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
- * A unit test for code in the <code>Project2</code> class.  This is different
- * from <code>Project2IT</code> which is an integration test (and can handle the calls
+ * A unit test for code in the <code>Project3</code> class.  This is different
+ * from <code>Project3IT</code> which is an integration test (and can handle the calls
  * to {@link System#exit(int)} and the like.
  */
-class Project2Test {
+class Project3Test {
 
   @Test
   void readmeCanBeReadAsResource() throws IOException {
     try (
-      InputStream readme = Project2.class.getResourceAsStream("README.txt")
+      InputStream readme = Project3.class.getResourceAsStream("README.txt")
     ) {
       assertThat(readme, not(nullValue()));
       BufferedReader reader = new BufferedReader(new InputStreamReader(readme));
@@ -35,29 +35,29 @@ class Project2Test {
 
   @Test
   void checkBeginTimes(){
-    Project2 obj = new Project2();
+    Project3 obj = new Project3();
     String beginTime = "7:33";
     obj.parseTimes(beginTime);
     beginTime = "07:45";
     obj.parseTimes(beginTime);
-    beginTime = "22:22";
+    beginTime = "12:22";
     obj.parseTimes(beginTime);
   }
 
   @Test
   void checkEndTimes(){
-    Project2 obj = new Project2();
-    String endTime = "13:44";
+    Project3 obj = new Project3();
+    String endTime = "2:44";
     obj.parseTimes(endTime);
     endTime = "07:45";
     obj.parseTimes(endTime);
-    endTime = "22:22";
+    endTime = "12:22";
     obj.parseTimes(endTime);
   }
 
   @Test
   void checkBeginDates(){
-    Project2 obj = new Project2();
+    Project3 obj = new Project3();
     String beginDate = "07/13/2000";
     obj.parseDates(beginDate);
     beginDate = "7/13/2000";
@@ -70,7 +70,7 @@ class Project2Test {
 
   @Test
   void checkEndDates(){
-    Project2 obj = new Project2();
+    Project3 obj = new Project3();
     String endDate = "3/13/2000";
     obj.parseDates(endDate);
     endDate = "3/31/2000";

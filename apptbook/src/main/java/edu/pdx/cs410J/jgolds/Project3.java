@@ -1,16 +1,12 @@
 package edu.pdx.cs410J.jgolds;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.*;
-import java.lang.Character;
-
+import java.util.*;
+import edu.pdx.cs410J.ParserException;
 /**
- * The main class for Project2 for CS410 Advanced Programming in Java
+ * The main class for Project3 for CS410 Advanced Programming in Java
  */
-public class Project2 {
+public class Project3 {
   public static final String INCORRECT_DATE_FORMATTING = "Incorrect date formatting";
   public static final String INCORRECT_TIME_FORMATTING = "Incorrect time formatting";
   public static final String NOT_ENOUGH_ARGS = "There are not enough arguments, there should be at least 6, " +
@@ -18,7 +14,7 @@ public class Project2 {
   public static final String DESCRIPTION_ARGUMENT_IS_MISSING_FROM_COMMAND_LINE = "Description argument is missing from command line";
 
   /**
-   * Creates a new <code>Project2</code>
+   * Creates a new <code>Project3</code>
    *
    * @param args
    *        1. The owner of AppointmentBook, made up of a collection of Appointments
@@ -33,22 +29,29 @@ public class Project2 {
    * into an external text file defined by the argument following textFile
    */
 
-  public static void main(String[] args) throws IOException {
+  public static void main(String[] args) throws IOException, ParserException {
     Appointment appointment = new Appointment();
     AppointmentBook appointmentBook = new AppointmentBook();
-    AppointmentBook appt2;
+    AppointmentBook appt2 = new AppointmentBook();
     String filename = null;
+    String prettyFileName = null;
     File file = null;
+    File prettyFile = null;
     boolean textFile = false;
-    Project2 project = new Project2();
+    Project3 project = new Project3();
     String owner = null;
     String description = null;
     String beginDate = null;
     String beginTime = null;
+    String beginAmPm = null;
     String endDate = null;
     String endTime = null;
+    String endAmPm = null;
     boolean print = false;
     boolean isThereTextFile = false;
+    boolean pretty = false;
+    boolean printPretty = false;
+    boolean prettyPrintFile = false;
 
     for (String arg: args) {
       if(arg.equals("-README")) {
@@ -72,6 +75,27 @@ public class Project2 {
           System.exit(1);
         }
       }
+      else if(arg.equals("-pretty")){
+        pretty = true;
+      }
+      else if(pretty){
+        pretty = false;
+        if(arg.equals("-")){
+          printPretty = true;
+        }
+        else{
+          prettyFileName = arg;
+          if(prettyFileName.endsWith("txt")){
+            prettyFile = new File(arg);
+            prettyPrintFile = true;
+          }
+          else{
+            System.err.println("This is not a text file. The -textFile command needs to be followed by a " +
+                    "text file, which should end in .txt.");
+            System.exit(1);
+          }
+        }
+      }
       else if(owner == null) {
         owner = arg;
         appointmentBook.addOwner(owner);
@@ -93,7 +117,17 @@ public class Project2 {
       else if(beginTime == null) {
         project.parseTimes(arg);
         beginTime = arg;
-        appointment.addBeginTime(beginDate,beginTime);
+        //appointment.addBeginTime(beginDate,beginTime,beginAmPm);
+      }
+      else if(beginAmPm == null) {
+        if(arg.equals("am") || arg.equals("pm")){
+          beginAmPm = arg;
+          appointment.addBeginTime(beginDate,beginTime,beginAmPm);
+        }
+        else{
+          incorrectTimeFormatting();
+          System.exit(1);
+        }
       }
       else if(endDate == null) {
         project.parseDates(arg);
@@ -102,8 +136,19 @@ public class Project2 {
       else if(endTime == null) {
         project.parseTimes(arg);
         endTime = arg;
-        appointment.addEndTime(endDate,endTime);
-        appointmentBook.addAppointment(appointment);
+        //appointment.addEndTime(endDate,endTime,endAmPm);
+        //appointmentBook.addAppointment(appointment);
+      }
+      else if(endAmPm == null) {
+        if(arg.equals("am") || arg.equals("pm")){
+          endAmPm = arg;
+          appointment.addEndTime(endDate,endTime,endAmPm);
+          appointmentBook.addAppointment(appointment);
+        }
+        else{
+          incorrectTimeFormatting();
+          System.exit(1);
+        }
       }
       else{
         System.err.println("There are too many arguments!");
@@ -132,7 +177,14 @@ public class Project2 {
         textdump.dump(appointmentBook);
       } else {
         TextParser textparse = new TextParser(filename);
-        appt2 = textparse.parse();
+        try {
+          appt2 = textparse.parse();
+        }
+        catch(ParserException e){
+          System.out.println("Can't parse empty file");
+          System.exit(1);
+
+        }
         if(!appt2.owner.equals(appointmentBook.owner)){
           System.err.println("The owner of the appointment book is not the same as the one on file.");
           System.exit(1);
@@ -140,7 +192,27 @@ public class Project2 {
         appt2.addAppointment(appointment);
         TextDumper textdump = new TextDumper(filename);
         textdump.dump(appt2);
+        if(prettyPrintFile || printPretty) {
+          PrettyPrinter printer = new PrettyPrinter(prettyFileName);
+          ArrayList<Appointment> appts = new ArrayList<>();
+          appts = printer.sortAppointments(appt2.appointments);
+          appt2.appointments = appts;
+          if(prettyPrintFile)
+            printer.dump(appt2);
+          else
+            printer.prettyDisplay(appt2);
+        }
       }
+    }
+    if(!isThereTextFile && (prettyPrintFile || printPretty)){
+        PrettyPrinter printer = new PrettyPrinter(prettyFileName);
+        ArrayList<Appointment> appts = new ArrayList<>();
+        appts = printer.sortAppointments(appointmentBook.appointments);
+        appointmentBook.appointments = appts;
+        if(prettyPrintFile)
+          printer.dump(appointmentBook);
+        else
+          printer.prettyDisplay(appointmentBook);
     }
     if (print) {
       System.out.println(appointment.toString());
@@ -169,7 +241,7 @@ public class Project2 {
 
   /**
    * Takes in a String that should be beginTime or endTime and makes sure it is
-   * the correct format, i.e. 3:33 or 13:45 would both be appropriate
+   * the correct format, i.e. 3:33 or 11:45 would both be appropriate
    */
   public void parseTimes(String time){
     char []array = new char[time.length()];
@@ -181,7 +253,7 @@ public class Project2 {
     if(time.length() == 4){
       for(int i = 0; i < 4; ++i){
         if(i == 0)
-          checkZeroThroughNine(array[i], INCORRECT_TIME_FORMATTING);
+          checkOneThroughNine(array[i], INCORRECT_TIME_FORMATTING);
         else if(i == 1 && array[i] != ':')
           incorrectTimeFormatting();
         else if(i ==2)
@@ -193,11 +265,11 @@ public class Project2 {
     else{
       for(int i = 0; i < 5; ++i){
         if(i == 0)
-          checkZeroThroughTwo(array[i], INCORRECT_TIME_FORMATTING);
+          checkZeroAndOne(array[i], INCORRECT_TIME_FORMATTING);
         else if(i == 1) {
           checkZeroThroughNine(array[i], INCORRECT_TIME_FORMATTING);
-          if(array[0] == '2')
-            checkZeroThroughThree(array[1], INCORRECT_TIME_FORMATTING);
+          if(array[0] == '1')
+            checkZeroThroughTwo(array[1], INCORRECT_TIME_FORMATTING);
         }
         else if(i == 2 && array[i] != ':')
           incorrectTimeFormatting();
@@ -409,7 +481,7 @@ public class Project2 {
    */
   private static void displayReadMe() throws IOException {
     try (
-            InputStream readme = Project2.class.getResourceAsStream("README.txt")
+            InputStream readme = Project3.class.getResourceAsStream("README.txt")
     ) {
       if(readme == null){
         System.err.println("README file does not exist");
