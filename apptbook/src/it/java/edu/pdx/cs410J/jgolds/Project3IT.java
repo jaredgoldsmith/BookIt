@@ -17,8 +17,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
  * Integration tests for the {@link Project3} main class.
  */
 
-class Project3IT extends InvokeMainTestCase {
 
+class Project3IT extends InvokeMainTestCase {
   /**
    * Invokes the main method of {@link Project3} with the given arguments.
    */
@@ -29,7 +29,6 @@ class Project3IT extends InvokeMainTestCase {
   /**
    * Tests that invoking the main method with no arguments issues an error
    */
-
   @Test
   void testNoCommandLineArguments() {
     MainMethodResult result = invokeMain(Project3.class);
@@ -114,13 +113,13 @@ class Project3IT extends InvokeMainTestCase {
   void wrongOwnerShouldFail() {
     try {
       AppointmentBook apptBook = getApptBook();
-      BufferedWriter bw = new BufferedWriter(new FileWriter("btlt.txt"));
-      TextDumper dump = new TextDumper("btlt.txt");
+      BufferedWriter bw = new BufferedWriter(new FileWriter("pzmz.txt"));
+      TextDumper dump = new TextDumper("pzmz.txt");
       dump.dump(apptBook);
 
       //bw.write(apptBook.owner + "\n");
       bw.close();
-      MainMethodResult result = invokeMain(Project3.class, "-textFile", "btlt.txt", "Buck", "Fancy meet", "4/20/2020", "3:33", "am", "5/5/2020", "4:44", "pm");
+      MainMethodResult result = invokeMain(Project3.class, "-textFile", "pzmz.txt", "Buck", "Fancy meet", "4/20/2020", "3:33", "am", "5/5/2020", "4:44", "pm");
       assertThat(result.getTextWrittenToStandardError(), containsString("The owner of the appointment book is not the same as the one on file."));
     } catch (IOException e) {
       System.err.println("The file you were looking for does not exist");
@@ -132,9 +131,7 @@ class Project3IT extends InvokeMainTestCase {
   void parseShouldWorkWithCorrectFormat() throws ParserException {
     AppointmentBook apptBook = getApptBook();
     try {
-      String fileName = "bbb.txt";
-      //ParserException ex = new ParserException("Can't parse");
-      //AppointmentBook apptBook = getApptBook();
+      String fileName = "pcheb.txt";
       AppointmentBook appt2 = new AppointmentBook();
       BufferedWriter bw = new BufferedWriter(new FileWriter(fileName));
       TextDumper dump = new TextDumper(fileName);
@@ -146,14 +143,12 @@ class Project3IT extends InvokeMainTestCase {
         if(appt2.owner == null)
           throw ex;
       } catch (ParserException ex) {
-        System.out.println("Cannot parse");
+        System.err.println("Cannot parse");
         System.exit(1);
       }
 
 
-      //MainMethodResult result = invokeMain(Project3.class, "-textFile", fileName, "Buck", "Fancy meet", "4/20/2020", "3:33", "am", "5/5/2020", "4:44", "pm");
       assertThat(apptBook.owner, equalTo(appt2.owner));
-      //assertEquals(result.getTextWrittenToStandardError(), containsString("The owner of the appointment book is not the same as the one on file."));
     } catch (IOException e) {
       System.err.println("The file you were looking for does not exist");
       System.exit(1);

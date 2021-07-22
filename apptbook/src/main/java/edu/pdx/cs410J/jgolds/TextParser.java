@@ -12,18 +12,6 @@ public class TextParser implements AppointmentBookParser<AppointmentBook> {
     String fileName;
 
     TextParser(String fileName){
-        /*try{
-            File file = new File(fileName);
-            ParserException e = new ParserException(fileName);
-            if(!file.exists()){
-               throw(e);
-            }
-        }
-        catch(ParserException e){
-            System.err.println("Cannot parse an empty file");
-            System.exit(1);
-        }
-         */
         this.fileName = fileName;
     }
 
@@ -37,17 +25,13 @@ public class TextParser implements AppointmentBookParser<AppointmentBook> {
      *   appointments stored in the text file. If the text file doesn't exist, then the
      *   parsing will not take place.
      */
-    //@Override
+    @Override
     public AppointmentBook parse() throws ParserException{
-        //File file = new File(fileName);
-        //BufferedReader br = null;
         Project3 proj = new Project3();
         String [] split;
         File file = new File(fileName);
-        //IOException ex = new IOException();
 
         try{
-            //File file = new File(fileName);
             BufferedReader br;
             ParserException e = new ParserException(fileName);
             if(!file.exists())
@@ -60,69 +44,55 @@ public class TextParser implements AppointmentBookParser<AppointmentBook> {
             int i = 0;
             apptbook.owner = br.readLine();
             if(apptbook.owner == null)
-                throw e;
-            //if(apptbook.owner == null)
-                //return apptbook;
+                return apptbook;
             while((line = br.readLine()) != null){
-                if(i == 0) {
-                    appt = new Appointment();
-                    appt.addDescription(line);
-             //       System.out.println(line);
-                    i = 1;
+               if(i == 0) {
+                   appt = new Appointment();
+                   appt.addDescription(line);
+                   i = 1;
                 }
                 else if(i == 1){
                     appt.beginTime = line;
                     split = appt.beginTime.split(" ");
-                    proj.parseDates(split[0]);
-                    proj.parseTimes(split[1]);
-            //        System.out.println(line);
-                    i = 2;
+                    if(split[2].equals("am") || split[2].equals("pm"))
+                   {
+                       proj.parseDates(split[0]);
+                       proj.parseTimes(split[1]);
+                       appt.setStartOfAppointment(line);
+                       i = 2;
+                   }
+                   else{
+                       System.err.println("Text file contains faulty date format");
+                       System.exit(1);
+                   }
                 }
                 else
                     {
                     appt.endTime = line;
-                    split = appt.beginTime.split(" ");
-                    proj.parseDates(split[0]);
-                    proj.parseTimes(split[1]);
-           //         System.out.println(line);
-                    apptbook.addAppointment(appt);
-                    i = 0;
+                    split = appt.endTime.split(" ");
+                    if(split[2].equals("am") || split[2].equals("pm")) {
+                        proj.parseDates(split[0]);
+                        proj.parseTimes(split[1]);
+                        appt.setEndOfAppointment(line);
+                        apptbook.addAppointment(appt);
+                        i = 0;
+                    }
+                    else{
+                        System.err.println("Text file contains faulty date format");
+                        System.exit(1);
                 }
             }
-            /*System.out.println("Parser start");
-            for(i = 0; i < apptbook.appointments.size(); ++i)
-                System.out.println(apptbook.appointments.get(i).description);
-            System.out.println("Parser end");
-
-             */
+            }
+            if(i != 0){
+                System.err.println("Text file format is incorrect");
+                System.exit(1);
+            }
             br.close();
             return apptbook;
         }
-        /*
-        catch (IOException e){try {
-            IOException exc = new IOException();
-            throw new IOException("File doesn't exist", exc);
-        }
-        catch (IOException exc){
-                System.exit(1);
-            }
-        }*/
-
-        //catch (IOException e){
-         //   System.exit(1);
-        //}
         catch (ParserException e){
             throw new ParserException("Can't parse empty file", e);
-            //System.err.println("Cannot parse an empty file");
-            //System.exit(1);
         }
-        /*
-        try{
-            if(br != null)
-                br.close();
-        }
-
-         */
         catch(IOException e){
             System.err.println("Didn't work");
             System.exit(1);

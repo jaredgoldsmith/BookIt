@@ -4,7 +4,6 @@ import org.junit.jupiter.api.Test;
 
 import java.util.*;
 import java.text.*;
-//import static java.util.Collections.emptyList;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -17,19 +16,20 @@ import static org.hamcrest.core.IsEqual.equalTo;
  * You'll need to update these unit tests as you build out your program.
  */
 public class AppointmentTest {
-
   @Test
   void getDateDate(){
     Appointment appt = new Appointment();
     appt.addBeginTime("3/3/2020", "4:44", "am");
-    Date somedate = appt.getBeginTime();
-    System.out.println(DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT).format(somedate));
+    appt.setStartOfAppointment(appt.beginTime);
+    System.out.println(appt.startOfAppointment);
+    System.out.println(DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT).format(appt.startOfAppointment));
   }
 
   @Test
   void getBeginTimeStringNeedsToBeImplemented() {
     Appointment appointment = new Appointment();
     appointment.addBeginTime("3/12/2020", "3:33", "am");
+    appointment.setStartOfAppointment(appointment.beginTime);
     String beginTime = "3/12/20, 3:33 AM";
     assertThat(appointment.getBeginTimeString(), equalTo(beginTime));
   }
@@ -38,8 +38,9 @@ public class AppointmentTest {
   void getEndTimeStringNeedsToBeImplemented(){
     Appointment appointment = new Appointment();
     appointment.addEndTime("3/12/2020", "4:33", "am");
-    String endTime = "3/12/20, 4:33 am";
-    //assertThat(appointment.getEndTimeString(), equalTo(endTime));
+    appointment.setEndOfAppointment(appointment.endTime);
+    String endTime = "3/12/20, 4:33 AM";
+    assertThat(appointment.getEndTimeString(), equalTo(endTime));
   }
 
   @Test
@@ -56,11 +57,6 @@ public class AppointmentTest {
     assertThat(appointment.getDescription(), is(nullValue()));
   }
 
-  //@Test
-  //void forProject1ItIsOkayIfGetBeginTimeReturnsNull() {
-  //  Appointment appointment = new Appointment();
-  //  assertThat(appointment.getBeginTime(), is(nullValue()));
-  //}
 
   private Appointment getMeet() {
     Appointment appointment = new Appointment();
@@ -71,6 +67,24 @@ public class AppointmentTest {
 
   }
 
+  @Test
+  void testCompareTo(){
+   Appointment appt = getMeet();
+   Appointment appt2 = new Appointment();
+   appt2.addDescription("Zancy meeting for fancy folks");
+   appt2.addBeginTime("7/5/2021", "4:11", "am");
+   appt2.addEndTime("7/5/2021", "5:11", "am");
+   System.out.println(appt.compareTo(appt2));
+
+  }
+  @Test
+  void testGetDateFunction(){
+    Appointment appt = getMeet();
+    Date beginDate = appt.getBeginTime();
+    Date endDate = appt.getEndTime();
+    System.out.println(beginDate);
+    System.out.println(endDate);
+  }
   @Test
   void appointmentStringTesting(){
     Appointment appointment = new Appointment();
@@ -108,5 +122,4 @@ public class AppointmentTest {
     Appointment appointment = getMeet();
     assertThat(appointment.toString(), containsString("5:11"));
   }
-
 }

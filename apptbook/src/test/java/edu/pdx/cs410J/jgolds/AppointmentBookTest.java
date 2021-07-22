@@ -1,14 +1,12 @@
 package edu.pdx.cs410J.jgolds;
 
 import org.junit.jupiter.api.Test;
-//import java.util.Collection;
 import java.util.ArrayList;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
 
 public class AppointmentBookTest {
-
     @Test
     void getOwnerStringNeedsToBeImplemented() {
         AppointmentBook appointmentBook = new AppointmentBook("Buck");
@@ -19,8 +17,6 @@ public class AppointmentBookTest {
         appointmentBook.addAppointment(appointment);
         String owner = "Buck";
         assertThat(appointmentBook.getOwnerName(), equalTo(owner));
-
-        //assertThrows(UnsupportedOperationException.class, appointment::getBeginTimeString);
     }
 
     @Test
@@ -59,37 +55,24 @@ public class AppointmentBookTest {
         appt.addBeginTime("7/17/2020", "3:13", "am");
         appt.addEndTime("7/17/2020", "4:13", "am");
         appointmentBook.addAppointment(appt);
-        /*
-        Appointment appt = new Appointment();
-        appt.addDescription("Zed is great");
-        appt.addBeginTime("03/14/1982", "5:05");
-        appointment.addEndTime("03/14/1982", "6:13");
-        appointmentBook.addAppointment(appt);
-
-         */
-
         return appointmentBook;
     }
 
     @Test
     void testBookDisplay(){
         AppointmentBook myApp = getApp();
-        System.out.println(myApp.appointments);
-        System.out.println(myApp.owner);
     }
 
     @Test
     void testToString() {
         AppointmentBook appBook = getApp();
-        //assertThat(appBook.toString(), equalTo("Buck's appointment book with 1 appointments"));
     }
+
     private ArrayList<Appointment> sortAppointments(ArrayList<Appointment> appointmentsArg){
 
         ArrayList<Appointment> appointments= new ArrayList<>();
         appointments.add(0, appointmentsArg.get(0));
         appointments.add(1, appointmentsArg.get(1));
-        //appointments = appointmentsArg;
-        System.out.println("Before sorting dez: " + appointmentsArg.get(0).description);
         int [] orderOfAppointments = new int[appointments.size()];
         long greater = 0;
         int i = 0;
@@ -122,7 +105,6 @@ public class AppointmentBookTest {
                 }
             }
         }
-        System.out.println("After sorting dez: " + appointmentsArg.get(0).description);
         return appointments;
     }
     @Test
@@ -132,38 +114,20 @@ public class AppointmentBookTest {
         Appointment appt = new Appointment();
         appt = apptBook.appointments.get(0);
         long getTime = appt.getBeginTime().getTime();
-        System.out.println(apptBook.appointments.get(0).description + " starts at " + appt.getBeginTime() + " which is in millis is " + getTime);
         appt = apptBook.appointments.get(1);
         getTime = appt.getBeginTime().getTime();
-        System.out.println(apptBook.appointments.get(1).description + " starts at " + appt.getBeginTime() + " which is in millis is " + getTime);
-        System.out.println(apptBook.appointments.get(0).description + " starts at " + appt.getBeginTime() + " which is in millis is " + getTime);
         ArrayList<Appointment> appointments = sortAppointments(apptBook.appointments);
-        System.out.println(apptBook.appointments.get(0).description + " starts at " + appt.getBeginTime() + " which is in millis is " + getTime);
 
         appt = appointments.get(0);
         getTime = appt.getBeginTime().getTime();
-        System.out.println(appt.description + " starts at " + appt.getBeginTime() + " which is in millis is " + getTime);
         appt = appointments.get(1);
         getTime = appt.getBeginTime().getTime();
-        System.out.println(appt.description + " starts at " + appt.getBeginTime() + " which is in millis is " + getTime);
 
-        System.out.println("Before switch");
-        //appt = apptBook.appointments.get(0);
         getTime = apptBook.appointments.get(0).getBeginTime().getTime();
-        System.out.println(apptBook.appointments.get(0).description + " starts at " + appt.getBeginTime() + " which is in millis is " + getTime);
         getTime = apptBook.appointments.get(1).getBeginTime().getTime();
-        System.out.println(apptBook.appointments.get(1).description + " starts at " + appt.getBeginTime() + " which is in millis is " + getTime);
 
         apptBook.appointments = appointments;
-        System.out.println("After switch");
-        //appt = apptBook.appointments.get(0);
         getTime = apptBook.appointments.get(0).getBeginTime().getTime();
-        System.out.println(apptBook.appointments.get(0).description + " starts at " + appt.getBeginTime() + " which is in millis is " + getTime);
         getTime = apptBook.appointments.get(1).getBeginTime().getTime();
-        System.out.println(apptBook.appointments.get(1).description + " starts at " + appt.getBeginTime() + " which is in millis is " + getTime);
-
-
-
-
     }
 }

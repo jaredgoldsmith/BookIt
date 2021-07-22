@@ -9,8 +9,8 @@ import edu.pdx.cs410J.ParserException;
 public class Project3 {
   public static final String INCORRECT_DATE_FORMATTING = "Incorrect date formatting";
   public static final String INCORRECT_TIME_FORMATTING = "Incorrect time formatting";
-  public static final String NOT_ENOUGH_ARGS = "There are not enough arguments, there should be at least 6, " +
-          "not including the -print, -README, or -textFile file arguments";
+  public static final String NOT_ENOUGH_ARGS = "There are not enough arguments, there should be at least 8, " +
+          "not including the -print, -README, -textFile file, or -pretty file (-) arguments";
   public static final String DESCRIPTION_ARGUMENT_IS_MISSING_FROM_COMMAND_LINE = "Description argument is missing from command line";
 
   /**
@@ -21,12 +21,18 @@ public class Project3 {
    *        2. Description of the appointment
    *        3. Date of the start of the appointment
    *        4. Time of the start of the appointment
-   *        5. Date of the end of the appointment
-   *        6. Time of the end of the appointment
-   * Optional parameters of -print, -README, and -textFile file can precede the other arguments. -print will
-   * display the toString method from AbstractAppointment class. -README will read the contents
+   *        5. Either am or pm for the starting time of the appointment
+   *        6. Date of the end of the appointment
+   *        7. Time of the end of the appointment
+   *        8. Either am or pm for the end time of the appointment
+   *
+   * Optional parameters of -print, -README, -textFile file, and -pretty file (or -pretty -) can precede the other arguments.
+   * -print will display the toString method from AbstractAppointment class. -README will read the contents
    * of the README.txt file and exit once complete. -textFile file will read and write the appointment book
-   * into an external text file defined by the argument following textFile
+   * into an external text file defined by the argument following textFile. -pretty file will print out the
+   * appointment book in a prettier format, and the appointments will be sorted in chronological order.
+   * -pretty - will display the appointment book to standard out using the prettier and sorted format used
+   * for the -pretty file command.
    */
 
   public static void main(String[] args) throws IOException, ParserException {
@@ -36,7 +42,6 @@ public class Project3 {
     String filename = null;
     String prettyFileName = null;
     File file = null;
-    File prettyFile = null;
     boolean textFile = false;
     Project3 project = new Project3();
     String owner = null;
@@ -86,7 +91,6 @@ public class Project3 {
         else{
           prettyFileName = arg;
           if(prettyFileName.endsWith("txt")){
-            prettyFile = new File(arg);
             prettyPrintFile = true;
           }
           else{
@@ -117,12 +121,11 @@ public class Project3 {
       else if(beginTime == null) {
         project.parseTimes(arg);
         beginTime = arg;
-        //appointment.addBeginTime(beginDate,beginTime,beginAmPm);
       }
       else if(beginAmPm == null) {
         if(arg.equals("am") || arg.equals("pm")){
           beginAmPm = arg;
-          appointment.addBeginTime(beginDate,beginTime,beginAmPm);
+          appointment.addBeginTime(beginDate, beginTime, beginAmPm);
         }
         else{
           incorrectTimeFormatting();
@@ -136,14 +139,17 @@ public class Project3 {
       else if(endTime == null) {
         project.parseTimes(arg);
         endTime = arg;
-        //appointment.addEndTime(endDate,endTime,endAmPm);
-        //appointmentBook.addAppointment(appointment);
       }
       else if(endAmPm == null) {
         if(arg.equals("am") || arg.equals("pm")){
           endAmPm = arg;
-          appointment.addEndTime(endDate,endTime,endAmPm);
-          appointmentBook.addAppointment(appointment);
+          appointment.addEndTime(endDate, endTime, endAmPm);
+          Long difference = appointment.endOfAppointment.getTime() - appointment.startOfAppointment.getTime();
+          if(difference < 0){
+            System.err.println("The end of the appointment cannot be before the beginning of the appointment");
+            System.exit(1);
+          }
+              appointmentBook.addAppointment(appointment);
         }
         else{
           incorrectTimeFormatting();
@@ -156,18 +162,21 @@ public class Project3 {
       }
     }
     if(owner == null){
-      System.err.println("There aren't any command line arguments. There should be at least 6. Mandatory " +
+      System.err.println("There aren't any command line arguments. There should be at least 8 args. Mandatory " +
               "arguments should begin with owner, then a description, then a begin date, a begin time, " +
-              "an end date, and lastly an end time. There can also be a -print argument, a -README argument, " +
-              "and a -textFile argument " +
+              "am or pm for start time, an end date, an end time followed by an am or pm for end time. " +
+              "There can also be a -print argument, a -README argument, " + " a -textFile argument, and " +
+              "a -pretty file (or -pretty -) " +
               "to precede the mandatory arguments. The -print argument will print out a description of the " +
               "appointment, the -README argument will display the contents within the README file and exit, and " +
               "the -textFile command needs to be followed by a filename and this will either add the appointment book created" +
               " with the arguments sent in through the command line, or if the file already exists with an appointment " +
-              "book, then the program will add the appointment created with the command line arguments.");
+              "book, then the program will add the appointment created with the command line arguments. The -pretty file " +
+              "will write the appointmentBook into a file in a prettier format with the appointments sorted in chronological order. " +
+              "The -pretty - arguments will print the appointmentBook to standard out in the pretty sorted format.");
       System.exit(1);
     }
-    if(endTime == null){
+    if(endAmPm == null){
       System.err.println(NOT_ENOUGH_ARGS);
       System.exit(1);
     }
@@ -175,27 +184,41 @@ public class Project3 {
       if (!file.exists()) {
         TextDumper textdump = new TextDumper(filename);
         textdump.dump(appointmentBook);
+        if(prettyPrintFile || printPretty) {
+          PrettyPrinter printer = new PrettyPrinter(prettyFileName);
+          ArrayList<Appointment> appts = printer.sortAppointments(appointmentBook.appointments);
+          appointmentBook.appointments = appts;
+          if(prettyPrintFile)
+            printer.dump(appointmentBook);
+          else
+            printer.prettyDisplay(appointmentBook);
+        }
       } else {
         TextParser textparse = new TextParser(filename);
         try {
           appt2 = textparse.parse();
-        }
-        catch(ParserException e){
-          System.out.println("Can't parse empty file");
+        } catch (ParserException e) {
+          System.out.println("Can't parse empty file!");
           System.exit(1);
 
         }
-        if(!appt2.owner.equals(appointmentBook.owner)){
-          System.err.println("The owner of the appointment book is not the same as the one on file.");
-          System.exit(1);
+        if (appt2.owner == null || !project.checkDescription(appt2.owner)) {
+          TextDumper textdump = new TextDumper(filename);
+          textdump.dump(appointmentBook);
+          appt2 = appointmentBook;
+        } else {
+          if (!appt2.owner.equals(appointmentBook.owner)) {
+            System.out.println("Owner is: " + appt2.owner);
+            System.err.println("The owner of the appointment book is not the same as the one on file.");
+            System.exit(1);
+          }
+          appt2.addAppointment(appointment);
+          TextDumper textdump = new TextDumper(filename);
+          textdump.dump(appt2);
         }
-        appt2.addAppointment(appointment);
-        TextDumper textdump = new TextDumper(filename);
-        textdump.dump(appt2);
         if(prettyPrintFile || printPretty) {
           PrettyPrinter printer = new PrettyPrinter(prettyFileName);
-          ArrayList<Appointment> appts = new ArrayList<>();
-          appts = printer.sortAppointments(appt2.appointments);
+          ArrayList<Appointment> appts = printer.sortAppointments(appt2.appointments);
           appt2.appointments = appts;
           if(prettyPrintFile)
             printer.dump(appt2);
@@ -206,8 +229,7 @@ public class Project3 {
     }
     if(!isThereTextFile && (prettyPrintFile || printPretty)){
         PrettyPrinter printer = new PrettyPrinter(prettyFileName);
-        ArrayList<Appointment> appts = new ArrayList<>();
-        appts = printer.sortAppointments(appointmentBook.appointments);
+        ArrayList<Appointment> appts = printer.sortAppointments(appointmentBook.appointments);
         appointmentBook.appointments = appts;
         if(prettyPrintFile)
           printer.dump(appointmentBook);

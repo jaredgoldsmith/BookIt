@@ -3,11 +3,12 @@ package edu.pdx.cs410J.jgolds;
 import edu.pdx.cs410J.AbstractAppointment;
 import java.util.*;
 import java.text.*;
+import java.lang.Comparable;
 
 /**
  * Creates an Appointment object, which inherits the AbstractAppointment class
  */
-public class Appointment extends AbstractAppointment {
+public class Appointment extends AbstractAppointment implements Comparable<Appointment> {
   /**
    * beginTime represents the date and time of the start of the appointment
    */
@@ -21,43 +22,114 @@ public class Appointment extends AbstractAppointment {
    */
   protected String description;
 
+  protected Date startOfAppointment;
+  protected Date endOfAppointment;
   private static final SimpleDateFormat dateformat = new SimpleDateFormat("MM/dd/yyyy h:mm a");
 
-  @Override
-  public Date getBeginTime(){
-    //Date begindate = new Date();
-      //DateFormat df = new SimpleDateFormat("MM/dd/yyyy h:mm a");
-      //Date begindate = null;
-    System.out.println("The begin date is: " + this.beginTime);
-    try {
-      Date date = dateformat.parse(this.beginTime);
-      //begindate = df.parse(this.beginTime);
-      //return begindate;
-      return date;
+  /**
+   * Takes in an appointment and compares the current objects appointment. Checks to see
+   * if the objects appointment starts before the parameters appointment. Returns 1 if
+   * the object's appointment starts after the parameters, and -1 if not.
+   * @param appointments
+   *  Takes in appointments to compare to the object
+   * @return
+   *  Returns 1 if the object's appointment starts after the parameters, and -1 if not
+   */
+  public int compareTo(Appointment appointments){
+    if (this.startOfAppointment.getTime() == appointments.startOfAppointment.getTime()){
+      if (this.endOfAppointment.getTime() == appointments.endOfAppointment.getTime()){
+        if (this.description.compareTo(appointments.description) > 0){
+          return 1;
+        }
+      }
+      else if (this.endOfAppointment.getTime() > appointments.endOfAppointment.getTime()){
+        return 1;
+      }
     }
-    catch(ParseException e){
-      System.out.println("Incorrect begin date parsing");
-      System.exit(1);
+    else if (this.startOfAppointment.getTime() > appointments.startOfAppointment.getTime()){
+      return 1;
     }
-    Date date = new Date();
-    //Date begindate = new Date();
-    return date;
+    return -1;
   }
 
-  @Override
-  public Date getEndTime(){
-    //Date enddate = new Date();
-    DateFormat df = new SimpleDateFormat("MM/dd/yyyy h:mm a");
-    Date enddate = null;
+  /**
+   * Takes in a string of the date and converts it to a date object with a specific date pattern
+   * @param start
+   *  String representing the beginTime to be converted to date
+   */
+  public void setStartOfAppointment(String start){
+    DateFormat dtf = new SimpleDateFormat("MM/dd/yyyy h:mm a");
+    Date begintime = null;
     try {
-      enddate = df.parse(this.endTime);
-      return enddate;
+      begintime = dtf.parse(start);
+    } catch (ParseException e) {
+      System.err.println("Incorrect start date conversion");
+      System.exit(1);
+    }
+    if(begintime == null){
+      System.err.println("Failed converting string into date");
+      System.exit(1);
+    }
+    this.startOfAppointment = begintime;
+  }
+
+  /**
+   * Takes in a string of the date and converts it to a date object, which is a field of object
+   * @param end
+   *  String representing the endTime to be converted to date object
+   */
+  public void setEndOfAppointment(String end){
+    DateFormat dtf = new SimpleDateFormat("MM/dd/yyyy h:mm a");
+    Date endtime = null;
+    try {
+      endtime = dtf.parse(end);
+    } catch (ParseException e) {
+      System.err.println("Incorrect end date conversion");
+      System.exit(1);
+    }
+    if(endtime == null){
+      System.err.println("Failed converting string into date");
+      System.exit(1);
+    }
+    this.endOfAppointment = endtime;
+  }
+
+  /**
+   * Returns the field date by taking the string and converting it to date object
+   * @return
+   *  Date object is returned after converting string to Date
+   */
+  @Override
+  public Date getBeginTime(){
+    try {
+      startOfAppointment = dateformat.parse(this.beginTime);
+      return startOfAppointment;
     }
     catch(ParseException e){
-      System.out.println("Incorrect end date parsing");
+      System.err.println("Incorrect begin date parsing");
+      System.exit(1);
     }
-    //Date enddate = new Date();
-    return enddate;
+    startOfAppointment = new Date();
+    return startOfAppointment;
+  }
+
+  /**
+   * Returns the field date by taking the string and converting it to date object
+   * @return
+   *  Date object is returned after converting string to Date
+   */
+  @Override
+  public Date getEndTime(){
+    try {
+      endOfAppointment = dateformat.parse(this.endTime);
+      return endOfAppointment;
+    }
+    catch(ParseException e){
+      System.err.println("Incorrect end date conversion");
+      System.exit(1);
+    }
+    endOfAppointment = new Date();
+    return endOfAppointment;
   }
 
   /**
@@ -80,6 +152,7 @@ public class Appointment extends AbstractAppointment {
    */
   public void addBeginTime(String beginDate, String beginTime, String beginAmPm){
     this.beginTime = beginDate + " " + beginTime + " " + beginAmPm;
+    this.setStartOfAppointment(this.beginTime);
   }
 
   /**
@@ -92,6 +165,7 @@ public class Appointment extends AbstractAppointment {
    */
   public void addEndTime(String endDate, String endTime, String endAmPm){
     this.endTime = endDate + " " + endTime + " " + endAmPm;
+    this.setEndOfAppointment(this.endTime);
   }
 
   /**
@@ -101,8 +175,7 @@ public class Appointment extends AbstractAppointment {
    */
   @Override
   public String getBeginTimeString() {
-
-    return DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT).format(getBeginTime());
+    return DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT).format(startOfAppointment);
   }
 
   /**
@@ -110,9 +183,10 @@ public class Appointment extends AbstractAppointment {
    * @return
    *  endTime is returned to the calling function
    */
+
   @Override
   public String getEndTimeString() {
-    return DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT).format(getEndTime());
+    return DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT).format(endOfAppointment);
   }
 
   /**

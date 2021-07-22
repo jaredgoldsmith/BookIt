@@ -14,7 +14,6 @@ public class AppointmentBook extends AbstractAppointmentBook<Appointment>{
    protected ArrayList<Appointment> appointments = new ArrayList<>();
    public AppointmentBook(){
       this.owner = null;
-      //this.appointments = null;
    }
 
    /**

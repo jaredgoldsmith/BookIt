@@ -9,55 +9,39 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class TextParserTest {
-
     @Test
     void cannotParseEmptyFile()throws IOException, ParserException {
-        String emptyFile = "bext.txt";
-        File empty = new File(emptyFile);
-       // if(!empty.exists()){
-            //TextParser parser = new TextParser(emptyFile);
-            //assertThrows(IOException.class, parser::parse);
-        //}
-        //else
-            //{
-            TextParser parser = new TextParser(emptyFile);
-            assertThrows(ParserException.class, parser::parse);
-        //}
-
-        //assertThrows(ParserException.class, parser::parse);
-
+        String emptyFile = "pfilt.txt";
+        TextParser parser = new TextParser(emptyFile);
+        assertThrows(ParserException.class, parser::parse);
     }
     @Test
     void appointmentBookOwnerCanBeDumpedAndParsed(@TempDir File dir) throws IOException, ParserException {
-        String owner = "Owner";
-        String fileName = "fext.txt";
-        //File file = new File(dir, fileName);
-        //if(file.exists()) {
-            AppointmentBook book = new AppointmentBook(owner);
-            TextDumper dumper = new TextDumper(fileName);
-        //    TextParser parser = new TextParser(fileName);
-
-            dumper.dump(book);
+        String fileName = "ptilt.txt";
+        AppointmentBook book = getApp();
+        TextDumper dumper = new TextDumper(fileName);
+        dumper.dump(book);
+        System.out.println(book.appointments);
         TextParser parser = new TextParser(fileName);
-
-        book = parser.parse();
-            assertThat(book.getOwnerName(), equalTo(owner));
-        //}
-        /*
-        else{
-            AppointmentBook book = new AppointmentBook(owner);
-            TextDumper dumper = new TextDumper(fileName);
-            dumper.dump(book);
-
-        }*/
+        AppointmentBook apptBook2 = parser.parse();
+        System.out.println(apptBook2.appointments);
+        System.out.println(book.appointments);
+        assertThat(book.getOwnerName(), equalTo(apptBook2.getOwnerName()));
     }
 
-    @Test
-    void appointmentBookOwnerCanBeDumpedToFileAndParsed(@TempDir File dir) throws IOException, ParserException {
-        File textFile = new File(dir, "appointments.txt");
-        String owner = "Owner";
-
-        AppointmentBook book = new AppointmentBook(owner);
-        assertThat(book.getOwnerName(), equalTo(owner));
+    private AppointmentBook getApp() {
+        AppointmentBook appointmentBook = new AppointmentBook("Buck");
+        Appointment appointment = new Appointment();
+        appointment.addDescription("Therapist appointment");
+        appointment.addBeginTime("7/17/2020", "3:13", "am");
+        appointment.addEndTime("7/17/2020", "4:13", "am");
+        appointmentBook.addAppointment(appointment);
+        Appointment appt = new Appointment();
+        appt.addDescription("Cool date with Sally");
+        appt.addBeginTime("7/17/2020", "3:13", "am");
+        appt.addEndTime("7/17/2020", "4:13", "am");
+        appointmentBook.addAppointment(appt);
+        return appointmentBook;
     }
+
 }

@@ -10,12 +10,11 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 
 public class TextDumperTest {
-
     @Test
     void dumperDumpsAppointmentBookOwner() throws IOException {
         String owner = "Owner";
         AppointmentBook book = new AppointmentBook(owner);
-        String fileName = "text.txt";
+        String fileName = "pblam.txt";
         TextDumper dumper = new TextDumper(fileName);
         dumper.dump(book);
         String dumpedText = book.getOwnerName();
@@ -31,9 +30,9 @@ public class TextDumperTest {
         AppointmentBook apptbook = new AppointmentBook();
         apptbook.addOwner("owner");
         apptbook.addAppointment(appt);
-        TextDumper dumper = new TextDumper("text.txt");
+        TextDumper dumper = new TextDumper("pfri.txt");
         dumper.dump(apptbook);
-        TextParser parser = new TextParser("text.txt");
+        TextParser parser = new TextParser("pfri.txt");
         AppointmentBook appt2 = new AppointmentBook();
         try {
             appt2 = parser.parse();
