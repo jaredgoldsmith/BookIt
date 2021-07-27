@@ -24,20 +24,18 @@ import static org.junit.jupiter.api.Assertions.fail;
 class Project4IT extends InvokeMainTestCase {
     private static final String HOSTNAME = "localhost";
     private static final String PORT = System.getProperty("http.port", "8080");
-
+/*
     @Test
     void test0RemoveAllMappings() throws IOException {
         AppointmentBookRestClient client = new AppointmentBookRestClient(HOSTNAME, Integer.parseInt(PORT));
         client.removeAllAppointmentBooks();
     }
-
     @Test
     void test1NoCommandLineArguments() {
         MainMethodResult result = invokeMain( Project4.class );
         assertThat(result.getExitCode(), equalTo(1));
         assertThat(result.getTextWrittenToStandardError(), containsString(Project4.MISSING_ARGS));
     }
-/*
     @Test
     void test3NoAppointmentBooksThrowsAppointmentBookRestException() {
         String owner = "Dave";

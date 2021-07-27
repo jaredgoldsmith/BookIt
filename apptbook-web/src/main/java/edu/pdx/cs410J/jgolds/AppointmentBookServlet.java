@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.ArrayList;
 
 /**
  * This servlet ultimately provides a REST API for working with an
@@ -21,6 +22,8 @@ public class AppointmentBookServlet extends HttpServlet
 {
     static final String OWNER_PARAMETER = "owner";
     static final String DESCRIPTION_PARAMETER = "description";
+    static final String START_PARAMETER = "startTime";
+    static final String END_PARAMETER = "endTime";
 
     private final Map<String, AppointmentBook> books = new HashMap<>();
 
@@ -36,10 +39,25 @@ public class AppointmentBookServlet extends HttpServlet
         response.setContentType( "text/plain" );
 
         String owner = getParameter(OWNER_PARAMETER, request );
+        String description = getParameter(DESCRIPTION_PARAMETER, request);
+        String startTime = getParameter(START_PARAMETER, request);
+        String endTime = getParameter(END_PARAMETER, request);
         if (owner == null) {
             missingRequiredParameter(response, OWNER_PARAMETER);
+        }
+        else if(description == null && startTime != null && endTime != null){
+            writeSearchAppointments(owner, startTime, endTime, response);
+        }
+/*
+        else if(startTime == null){
+            missingRequiredParameter(response, START_PARAMETER);
+        }
+        else if(endTime == null){
+            missingRequiredParameter(response, END_PARAMETER);
+        }
 
-        } else {
+         */
+        else {
             writeAppointmentBook(owner, response);
         }
     }
@@ -61,16 +79,21 @@ public class AppointmentBookServlet extends HttpServlet
         }
 
         String description = getParameter(DESCRIPTION_PARAMETER, request );
-        if ( description == null) {
+        /*if ( description == null) {
             missingRequiredParameter( response, DESCRIPTION_PARAMETER);
             return;
         }
+         */
+        String startTime = getParameter(START_PARAMETER, request);
+        String endTime = getParameter(END_PARAMETER, request);
 
         AppointmentBook book = this.books.get(owner);
         if (book == null) {
             book = createAppointmentBook(owner);
         }
         Appointment appointment = new Appointment(description);
+        appointment.beginTime = startTime;
+        appointment.endTime = endTime;
         book.addAppointment(appointment);
 
         response.setStatus( HttpServletResponse.SC_OK);
@@ -107,6 +130,21 @@ public class AppointmentBookServlet extends HttpServlet
         response.sendError(HttpServletResponse.SC_PRECONDITION_FAILED, message);
     }
 
+    private void writeSearchAppointments(String owner, String startTime, String endTime, HttpServletResponse response)throws IOException{
+        AppointmentBook book = this.books.get(owner);
+        if(book == null){
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+        }
+        PrettyPrinter printer = new PrettyPrinter(new PrintWriter(System.out));
+        ArrayList<Appointment> appointments = printer.sortAppointments(book.appointments);
+        book.appointments = appointments;
+        appointments = printer.sortAppointmentsByDate(book.appointments, startTime, endTime);
+        book.appointments = appointments;
+        PrintWriter pw = response.getWriter();
+        TextDumper dumper = new TextDumper(pw);
+        dumper.dump(book);
+        pw.flush();
+    }
     private void writeAppointmentBook(String owner, HttpServletResponse response) throws IOException {
         AppointmentBook book = this.books.get(owner);
 

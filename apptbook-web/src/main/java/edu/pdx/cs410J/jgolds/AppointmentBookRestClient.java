@@ -51,8 +51,8 @@ public class AppointmentBookRestClient extends HttpRequestHelper {
     return parser.parse();
   }
 
-  public void createAppointment(String owner, String description) throws IOException {
-    Response response = postToMyURL(Map.of("owner", owner, "description", description));
+  public void createAppointment(String owner, String description, String startTime, String endTime) throws IOException {
+    Response response = postToMyURL(Map.of("owner", owner, "description", description,"startTime",startTime,"endTime",endTime));
     throwExceptionIfNotOkayHttpStatus(response);
   }
 

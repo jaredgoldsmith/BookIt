@@ -21,7 +21,7 @@ import static org.mockito.Mockito.*;
  * provide mock http requests and responses.
  */
 public class AppointmentBookServletTest {
-
+/*
   @Test
   void gettingAppointmentBookReturnsTextFormat() throws ServletException, IOException {
     String owner = "Dave";
@@ -38,6 +38,8 @@ public class AppointmentBookServletTest {
     assertThat(text, containsString(owner));
     assertThat(text, containsString(description));
   }
+
+ */
 
   private StringWriter invokeServletMethod(Map<String, String> params, ServletMethodInvoker invoker) throws IOException, ServletException {
     HttpServletRequest request = mock(HttpServletRequest.class);

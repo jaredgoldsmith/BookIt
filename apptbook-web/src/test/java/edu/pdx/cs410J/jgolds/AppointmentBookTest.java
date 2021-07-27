@@ -8,6 +8,7 @@ import java.io.StringWriter;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
+import java.util.*;
 
 public class AppointmentBookTest {
 
@@ -15,8 +16,17 @@ public class AppointmentBookTest {
     void appointmentBookCanBeDumpedAndParsed() throws IOException, ParserException {
         AppointmentBook book1 = new AppointmentBook("Owner");
         String description = "Description";
-        book1.addAppointment(new Appointment(description));
+        Appointment appt = new Appointment(description);
+        appt.addBeginTime("02/24/1982","3:33", "pm");
+        appt.addEndTime("02/24/1982","4:33", "pm");
 
+        book1.addAppointment(appt);
+
+        appt.setStartOfAppointment(appt.beginTime);
+        System.out.println(appt.startOfAppointment.getTime());
+        appt.setEndOfAppointment(appt.endTime);
+        System.out.println(appt.endOfAppointment.getTime());
+        System.out.println(appt.toString());
         StringWriter sw = new StringWriter();
         TextDumper dumper = new TextDumper(sw);
         dumper.dump(book1);
@@ -29,5 +39,6 @@ public class AppointmentBookTest {
 
         Appointment appointment = book2.getAppointments().iterator().next();
         assertThat(appointment.getDescription(), equalTo(description));
+
     }
 }

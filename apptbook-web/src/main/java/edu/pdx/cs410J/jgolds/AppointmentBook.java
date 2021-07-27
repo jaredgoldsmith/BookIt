@@ -6,9 +6,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 public class AppointmentBook extends AbstractAppointmentBook<Appointment> {
-    private final String owner;
-    private final Collection<Appointment> appointments = new ArrayList<>();
+    protected String owner;
+    protected ArrayList<Appointment> appointments = new ArrayList<>();
 
+    public AppointmentBook(){}
     public AppointmentBook(String owner) {
         this.owner = owner;
 
@@ -27,5 +28,9 @@ public class AppointmentBook extends AbstractAppointmentBook<Appointment> {
     @Override
     public void addAppointment(Appointment appt) {
         this.appointments.add(appt);
+    }
+
+    public void addOwner(String owner){
+        this.owner = owner;
     }
 }
