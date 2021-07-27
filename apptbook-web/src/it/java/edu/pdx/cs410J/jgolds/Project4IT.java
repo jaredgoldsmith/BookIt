@@ -1,5 +1,6 @@
 package edu.pdx.cs410J.jgolds;
 
+
 import edu.pdx.cs410J.InvokeMainTestCase;
 import edu.pdx.cs410J.UncaughtExceptionInMain;
 import edu.pdx.cs410J.web.HttpRequestHelper.RestException;
@@ -26,8 +27,8 @@ class Project4IT extends InvokeMainTestCase {
 
     @Test
     void test0RemoveAllMappings() throws IOException {
-      AppointmentBookRestClient client = new AppointmentBookRestClient(HOSTNAME, Integer.parseInt(PORT));
-      client.removeAllDictionaryEntries();
+        AppointmentBookRestClient client = new AppointmentBookRestClient(HOSTNAME, Integer.parseInt(PORT));
+        client.removeAllAppointmentBooks();
     }
 
     @Test
@@ -36,20 +37,12 @@ class Project4IT extends InvokeMainTestCase {
         assertThat(result.getExitCode(), equalTo(1));
         assertThat(result.getTextWrittenToStandardError(), containsString(Project4.MISSING_ARGS));
     }
-
+/*
     @Test
-    void test2EmptyServer() {
-        MainMethodResult result = invokeMain( Project4.class, HOSTNAME, PORT );
-        assertThat(result.getTextWrittenToStandardError(), result.getExitCode(), equalTo(0));
-        String out = result.getTextWrittenToStandardOut();
-        assertThat(out, out, containsString(Messages.formatWordCount(0)));
-    }
-
-    @Test
-    void test3NoDefinitionsThrowsAppointmentBookRestException() {
-        String word = "WORD";
+    void test3NoAppointmentBooksThrowsAppointmentBookRestException() {
+        String owner = "Dave";
         try {
-            invokeMain(Project4.class, HOSTNAME, PORT, word);
+            invokeMain(Project4.class, HOSTNAME, PORT, owner);
             fail("Expected a RestException to be thrown");
 
         } catch (UncaughtExceptionInMain ex) {
@@ -59,21 +52,18 @@ class Project4IT extends InvokeMainTestCase {
     }
 
     @Test
-    void test4AddDefinition() {
-        String word = "WORD";
-        String definition = "DEFINITION";
+    void test4AddAppointment() {
+        String owner = "Dave";
+        String description = "Still teaching Java";
 
-        MainMethodResult result = invokeMain( Project4.class, HOSTNAME, PORT, word, definition );
+        MainMethodResult result = invokeMain( Project4.class, HOSTNAME, PORT, owner, description );
         assertThat(result.getTextWrittenToStandardError(), result.getExitCode(), equalTo(0));
+
+        result = invokeMain( Project4.class, HOSTNAME, PORT, owner );
         String out = result.getTextWrittenToStandardOut();
-        assertThat(out, out, containsString(Messages.definedWordAs(word, definition)));
-
-        result = invokeMain( Project4.class, HOSTNAME, PORT, word );
-        out = result.getTextWrittenToStandardOut();
-        assertThat(out, out, containsString(Messages.formatDictionaryEntry(word, definition)));
-
-        result = invokeMain( Project4.class, HOSTNAME, PORT );
-        out = result.getTextWrittenToStandardOut();
-        assertThat(out, out, containsString(Messages.formatDictionaryEntry(word, definition)));
+        assertThat(out, out, containsString(owner));
+        assertThat(out, out, containsString(description));
     }
+
+ */
 }
