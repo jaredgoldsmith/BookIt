@@ -93,9 +93,11 @@ public class Project4 {
             }
             else if(endDate == null){
                 endDate = arg;
+                proj.parseDates(endDate);
             }
             else if(endTime == null){
                 endTime = arg;
+                proj.parseTimes(endTime);
             }
             else if(endAmPm == null){
                 endAmPm = arg;
@@ -178,7 +180,8 @@ public class Project4 {
                         System.exit(1);
                     }
                     else{
-                        AppointmentBook book = client.getAppointments(owner);
+                        //AppointmentBook book = client.getAppointments(owner);
+                        AppointmentBook book = client.getSearchedAppointments(owner,appt.beginTime,appt.endTime);
                         if(book == null){
                             System.err.println("There is no appointment book for this owner");
                             System.exit(1);
@@ -189,6 +192,7 @@ public class Project4 {
                         appointments = pretty.sortAppointmentsByDate(book.appointments, appt.beginTime, appt.endTime);
                         book.appointments = appointments;
                         pretty.dump(book);
+
                     }
                 }
                 else
@@ -202,6 +206,9 @@ public class Project4 {
                 System.exit(1);
                 return;
             }
+        }
+        if(isPrintArg && !isSearchArg){
+            System.out.println(appt.toString());
         }
         System.exit(0);
     }

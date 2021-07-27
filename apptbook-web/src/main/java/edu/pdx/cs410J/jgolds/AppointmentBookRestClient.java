@@ -51,8 +51,16 @@ public class AppointmentBookRestClient extends HttpRequestHelper {
     return parser.parse();
   }
 
+  public AppointmentBook getSearchedAppointments(String owner, String startTime, String endTime)throws IOException, ParserException{
+    Response response = get(this.url, Map.of("owner", owner, "start", startTime, "end", endTime));
+    throwExceptionIfNotOkayHttpStatus(response);
+    String text = response.getContent();
+    TextParser parser = new TextParser(new StringReader(text));
+    return parser.parse();
+  }
+
   public void createAppointment(String owner, String description, String startTime, String endTime) throws IOException {
-    Response response = postToMyURL(Map.of("owner", owner, "description", description,"startTime",startTime,"endTime",endTime));
+    Response response = postToMyURL(Map.of("owner", owner, "description", description,"start",startTime,"end",endTime));
     throwExceptionIfNotOkayHttpStatus(response);
   }
 

@@ -22,8 +22,8 @@ public class AppointmentBookServlet extends HttpServlet
 {
     static final String OWNER_PARAMETER = "owner";
     static final String DESCRIPTION_PARAMETER = "description";
-    static final String START_PARAMETER = "startTime";
-    static final String END_PARAMETER = "endTime";
+    static final String START_PARAMETER = "start";
+    static final String END_PARAMETER = "end";
 
     private final Map<String, AppointmentBook> books = new HashMap<>();
 
@@ -93,7 +93,9 @@ public class AppointmentBookServlet extends HttpServlet
         }
         Appointment appointment = new Appointment(description);
         appointment.beginTime = startTime;
+        appointment.setStartOfAppointment(appointment.beginTime);
         appointment.endTime = endTime;
+        appointment.setEndOfAppointment(appointment.endTime);
         book.addAppointment(appointment);
 
         response.setStatus( HttpServletResponse.SC_OK);
@@ -135,15 +137,18 @@ public class AppointmentBookServlet extends HttpServlet
         if(book == null){
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
         }
+        AppointmentBook copyBook = new AppointmentBook(book.getOwnerName());
+        copyBook.appointments = book.appointments;
         PrettyPrinter printer = new PrettyPrinter(new PrintWriter(System.out));
-        ArrayList<Appointment> appointments = printer.sortAppointments(book.appointments);
-        book.appointments = appointments;
-        appointments = printer.sortAppointmentsByDate(book.appointments, startTime, endTime);
-        book.appointments = appointments;
+        ArrayList<Appointment> appointments = printer.sortAppointments(copyBook.appointments);
+        copyBook.appointments = appointments;
+        appointments = printer.sortAppointmentsByDate(copyBook.appointments, startTime, endTime);
+        copyBook.appointments = appointments;
         PrintWriter pw = response.getWriter();
         TextDumper dumper = new TextDumper(pw);
-        dumper.dump(book);
+        dumper.dump(copyBook);
         pw.flush();
+        response.setStatus(HttpServletResponse.SC_OK);
     }
     private void writeAppointmentBook(String owner, HttpServletResponse response) throws IOException {
         AppointmentBook book = this.books.get(owner);
