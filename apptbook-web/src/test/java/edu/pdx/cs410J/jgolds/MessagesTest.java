@@ -11,7 +11,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
 class MessagesTest {
-
   @Test
   void malformedWordAndDefinitionReturnsNull() {
     assertThat(Messages.parseDictionaryEntry("blah"), nullValue());
@@ -69,4 +68,5 @@ class MessagesTest {
     Map<String, String> actual = Messages.parseDictionary(formatted);
     assertThat(actual, equalTo(dictionary));
   }
+
 }

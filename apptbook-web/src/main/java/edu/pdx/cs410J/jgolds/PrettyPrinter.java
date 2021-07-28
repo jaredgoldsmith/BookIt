@@ -19,35 +19,19 @@ public class PrettyPrinter implements AppointmentBookDumper<AppointmentBook> {
     @Override
     public void dump(AppointmentBook apptBook) throws IOException {
         PrintWriter pw = new PrintWriter(this.writer);
-        //pw.println("Appointments for " + apptBook.getOwnerName());
-/*
-        for (Appointment appointment : book.getAppointments()) {
-            pw.println("  " + appointment.getDescription());
-        }
-        try {
-
- */
-            //Appointment appt;
             long minuteDifference;
             SimpleDateFormat sdf = new SimpleDateFormat("h:mm a MM/dd/yyyy");
             String prettyBegin;
             String prettyEnd;
             int i = 1;
             Appointment appt = new Appointment();
+            if(apptBook.appointments.size() == 0){
+                System.err.println("There are no appointments in the searched timeframe");
+                System.exit(1);
+            }
 
             pw.println("\n\n\n" + apptBook.owner + "'s Appointment Book" + "\n");
-        //for (Appointment appt : apptBook.appointments) {
             for(i = 0; i < apptBook.appointments.size(); ++i){
-               /* appt = apptBook.appointments.get(i);
-                System.out.println("Dez is: )
-                pw.write("Appointment #" + (i+1) + ": " + appt.getDescription()+"\n");
-                prettyBegin = sdf.format(appt.getBeginTime());
-                prettyEnd = sdf.format(appt.getEndTime());
-                minuteDifference = (appt.getEndTime().getTime() - appt.getBeginTime().getTime())/1000/60;
-                pw.write("Appointment starts at " + prettyBegin + " and ends at " + prettyEnd + ",\n");
-                pw.write("for a total of " + minuteDifference + " minutes" +"\n\n");
-
-                */
                 appt = apptBook.appointments.get(i);
                 pw.println("Appointment #" + (i+1) + ": " + appt.description);
                 prettyBegin = sdf.format(apptBook.appointments.get(i).getBeginTime());
@@ -58,15 +42,6 @@ public class PrettyPrinter implements AppointmentBookDumper<AppointmentBook> {
             }
             pw.println("\n\n\n");
             pw.close();
-            /*
-        }
-        catch(IOException e){
-            System.err.println("The file you were looking for does not exist");
-            System.exit(1);
-        }
-    }
-
-             */
         pw.flush();
     }
     /**

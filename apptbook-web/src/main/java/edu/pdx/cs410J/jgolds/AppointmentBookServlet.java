@@ -46,6 +46,10 @@ public class AppointmentBookServlet extends HttpServlet
             missingRequiredParameter(response, OWNER_PARAMETER);
         }
         else if(description == null && startTime != null && endTime != null){
+            AppointmentBook apptBook = this.books.get(owner);
+            if(apptBook == null){
+                response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            }
             writeSearchAppointments(owner, startTime, endTime, response);
         }
 /*
@@ -113,7 +117,8 @@ public class AppointmentBookServlet extends HttpServlet
         this.books.clear();
 
         PrintWriter pw = response.getWriter();
-        pw.println(Messages.allDictionaryEntriesDeleted());
+        pw.println("All Appointment Book entries deleted");
+        //pw.println(Messages.allDictionaryEntriesDeleted());
         pw.flush();
 
         response.setStatus(HttpServletResponse.SC_OK);
@@ -123,12 +128,13 @@ public class AppointmentBookServlet extends HttpServlet
     /**
      * Writes an error message about a missing parameter to the HTTP response.
      *
-     * The text of the error message is created by {@link Messages#missingRequiredParameter(String)}
      */
     private void missingRequiredParameter( HttpServletResponse response, String parameterName )
             throws IOException
     {
-        String message = Messages.missingRequiredParameter(parameterName);
+        //A
+        // String message = Messages.missingRequiredParameter(parameterName);
+        String message = "Missing some arguments";
         response.sendError(HttpServletResponse.SC_PRECONDITION_FAILED, message);
     }
 
@@ -137,7 +143,7 @@ public class AppointmentBookServlet extends HttpServlet
         if(book == null){
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
         }
-        AppointmentBook copyBook = new AppointmentBook(book.getOwnerName());
+        AppointmentBook copyBook = new AppointmentBook(owner);
         copyBook.appointments = book.appointments;
         PrettyPrinter printer = new PrettyPrinter(new PrintWriter(System.out));
         ArrayList<Appointment> appointments = printer.sortAppointments(copyBook.appointments);
@@ -164,22 +170,6 @@ public class AppointmentBookServlet extends HttpServlet
 
             response.setStatus(HttpServletResponse.SC_OK);
         }
-    }
-
-    /**
-     * Writes all of the dictionary entries to the HTTP response.
-     *
-     * The text of the message is formatted with
-     * {@link Messages#formatDictionaryEntry(String, String)}
-     */
-    private void writeAllDictionaryEntries(HttpServletResponse response ) throws IOException
-    {
-//        PrintWriter pw = response.getWriter();
-//        Messages.formatDictionaryEntries(pw, books);
-//
-//        pw.flush();
-//
-//        response.setStatus( HttpServletResponse.SC_OK );
     }
 
     /**

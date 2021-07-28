@@ -89,7 +89,11 @@ public class AppointmentTest {
         Appointment appointment = new Appointment();
         appointment.addDescription("Fancy meeting for fancy folks");
         appointment.addBeginTime("7/4/2021", "4:11", "am");
+        appointment.setStartOfAppointment(appointment.beginTime);
+        Date begin = appointment.getBeginTime();
         appointment.addEndTime("7/4/2021", "5:11", "am");
+        Date end = appointment.getEndTime();
+        appointment.setEndOfAppointment(appointment.endTime);
         assertThat(appointment.toString(), equalTo("Fancy meeting for fancy folks from 7/4/21, 4:11 AM until 7/4/21, 5:11 AM"));
     }
 

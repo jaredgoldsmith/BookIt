@@ -8,6 +8,7 @@ import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.MethodOrderer.MethodName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
+import java.util.*;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -15,6 +16,7 @@ import java.net.HttpURLConnection;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
+import static org.junit.jupiter.api.Assertions.assertTimeoutPreemptively;
 import static org.junit.jupiter.api.Assertions.fail;
 
 /**
@@ -50,21 +52,45 @@ class Project4IT extends InvokeMainTestCase {
         }
     }
 
+ *A
+ /
+ */
+    @Test
+    void printAppointments() {
+    String owner = "Dave";
+        String description = "Still teaching Java";
+
+        MainMethodResult result = invokeMain( Project4.class, "-host", HOSTNAME, "-port", PORT, owner, description, "3/13/2020", "3:33", "am", "3/13/2020", "4:44", "am");
+
+    result = invokeMain( Project4.class, "-host", HOSTNAME, "-port", PORT, owner);
+    assertThat(result.getTextWrittenToStandardError(), result.getExitCode(), equalTo(0));
+}
+    @Test
+    void searchAppointments() {
+        String owner = "Dave";
+        String description = "Still teaching Java";
+
+        MainMethodResult result = invokeMain( Project4.class, "-host", HOSTNAME, "-port", PORT, owner, description, "3/13/2020", "3:33", "am", "3/13/2020", "4:44", "am");
+        result = invokeMain( Project4.class, "-host", HOSTNAME, "-port", PORT, owner, "-search", "3/13/2020", "3:33", "am", "3/13/2020", "4:44", "am");
+        assertThat(result.getTextWrittenToStandardError(), result.getExitCode(), equalTo(0));
+    }
     @Test
     void test4AddAppointment() {
         String owner = "Dave";
         String description = "Still teaching Java";
 
-        MainMethodResult result = invokeMain( Project4.class, HOSTNAME, PORT, owner, description );
+        MainMethodResult result = invokeMain( Project4.class, "-host", HOSTNAME, "-port", PORT, owner, description, "3/13/2020", "3:33", "am", "3/13/2020", "4:44", "am");
         assertThat(result.getTextWrittenToStandardError(), result.getExitCode(), equalTo(0));
 
+/*
         result = invokeMain( Project4.class, HOSTNAME, PORT, owner );
         String out = result.getTextWrittenToStandardOut();
         assertThat(out, out, containsString(owner));
         assertThat(out, out, containsString(description));
-    }
 
  */
+    }
+
 @Test
 void testNoCommandLineArguments() {
     MainMethodResult result = invokeMain(Project4.class);
@@ -133,7 +159,7 @@ void testNoCommandLineArguments() {
 
     @Test
     void correctDateFormatMonth(){
-        MainMethodResult result = invokeMain(Project4.class, "Buck", "Fancy meet", "4/20/2020", "3:33", "am", "05/5/2020", "12:44", "am");
+        MainMethodResult result = invokeMain(Project4.class, "Buck", "Fancy meet", "04/30/2020", "3:33", "am", "05/5/2020", "12:44", "am");
         assertThat(result.getExitCode(), CoreMatchers.equalTo(0));
     }
 

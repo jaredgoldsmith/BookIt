@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.PrintWriter;
+import java.io.*;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -109,7 +110,7 @@ public class AppointmentBookTest {
     }
 
     @Test
-    void testSorter() {
+    void testSorter() throws IOException{
         AppointmentBook apptBook = getApp();
         AppointmentBook apptBook2 = new AppointmentBook();
         Appointment appt = new Appointment();
@@ -119,6 +120,7 @@ public class AppointmentBookTest {
         getTime = appt.getBeginTime().getTime();
         PrettyPrinter printer = new PrettyPrinter(new PrintWriter(System.out));
         ArrayList<Appointment> appointments = printer.sortAppointments(apptBook.appointments);
+        ArrayList<Appointment> appts = printer.sortAppointmentsByDate(appointments,"7/15/2020 3:33 pm","7/20/2020 3:33 pm");
 
         appt = appointments.get(0);
         getTime = appt.getBeginTime().getTime();
@@ -131,5 +133,15 @@ public class AppointmentBookTest {
         apptBook.appointments = appointments;
         getTime = apptBook.appointments.get(0).getBeginTime().getTime();
         getTime = apptBook.appointments.get(1).getBeginTime().getTime();
+        TextDumper dumper = new TextDumper(new PrintWriter(System.out));
+        dumper.dump(apptBook);
+        TextParser parser = new TextParser(new BufferedReader(new StringReader(appt.beginTime)));
+        try {
+            AppointmentBook apptbook2 = parser.parse();
+        }
+        catch(ParserException e){
+            System.err.println("Couldn't parse");
+
+        }
     }
 }

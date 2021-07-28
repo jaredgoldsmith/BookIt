@@ -75,6 +75,7 @@ public class AppointmentBookServletTest {
     invokeServletMethod(Map.of("owner", owner, "description", description, "start", startTime, "end", endTime), servlet::doPost);
     invokeServletMethod(Map.of("owner", owner, "description", description, "start", startTime, "end", endTime), servlet::doGet);
     invokeServletMethod(Map.of("owner", owner, "start", startTime, "end", endTime), servlet::doGet);
+    invokeServletMethod(Map.of("owner", owner), servlet::doGet);
 
     AppointmentBook book = servlet.getAppointmentBook(owner);
     assertThat(book, notNullValue());

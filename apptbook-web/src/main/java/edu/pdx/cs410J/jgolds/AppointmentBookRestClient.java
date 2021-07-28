@@ -33,14 +33,6 @@ public class AppointmentBookRestClient extends HttpRequestHelper {
   }
 
   /**
-   * Returns all dictionary entries from the server
-   */
-  public Map<String, String> getAllDictionaryEntries() throws IOException {
-    Response response = get(this.url, Map.of());
-    return Messages.parseDictionary(response.getContent());
-  }
-
-  /**
    * Returns the definition for the given owner
    */
   public AppointmentBook getAppointments(String owner) throws IOException, ParserException {
@@ -78,6 +70,8 @@ public class AppointmentBookRestClient extends HttpRequestHelper {
     int code = response.getCode();
     if (code != HTTP_OK) {
       String message = response.getContent();
+      System.err.println("An appointment book does not exist for this owner");
+      System.exit(1);
       throw new RestException(code, message);
     }
     return response;
