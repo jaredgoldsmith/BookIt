@@ -157,7 +157,7 @@ public class Appointment extends AbstractAppointment implements Comparable<Appoi
      */
     public void addBeginTime(String beginDate, String beginTime, String beginAmPm){
         this.beginTime = beginDate + " " + beginTime + " " + beginAmPm;
-        //this.setStartOfAppointment(this.beginTime);
+        this.setStartOfAppointment(this.beginTime);
     }
 
     /**
@@ -170,7 +170,7 @@ public class Appointment extends AbstractAppointment implements Comparable<Appoi
      */
     public void addEndTime(String endDate, String endTime, String endAmPm){
         this.endTime = endDate + " " + endTime + " " + endAmPm;
-        //this.setEndOfAppointment(this.endTime);
+        this.setEndOfAppointment(this.endTime);
     }
 
     /**

@@ -21,15 +21,23 @@ import static org.mockito.Mockito.*;
  * provide mock http requests and responses.
  */
 public class AppointmentBookServletTest {
-/*
   @Test
   void gettingAppointmentBookReturnsTextFormat() throws ServletException, IOException {
     String owner = "Dave";
     String description = "Teach Java";
+    String startTime = "3/13/2020 3:33 pm";
+    String endTime = "3/13/2020 3:33 pm";
+
 
     AppointmentBookServlet servlet = new AppointmentBookServlet();
     AppointmentBook book = servlet.createAppointmentBook(owner);
-    book.addAppointment(new Appointment(description));
+    Appointment appt = new Appointment(description);
+    appt.beginTime = startTime;
+    appt.setStartOfAppointment(startTime);
+    appt.endTime = endTime;
+    appt.setEndOfAppointment(endTime);
+    book.addAppointment(appt);
+
 
     Map<String, String> queryParams = Map.of("owner", owner);
     StringWriter sw = invokeServletMethod(queryParams, servlet::doGet);
@@ -39,7 +47,6 @@ public class AppointmentBookServletTest {
     assertThat(text, containsString(description));
   }
 
- */
 
   private StringWriter invokeServletMethod(Map<String, String> params, ServletMethodInvoker invoker) throws IOException, ServletException {
     HttpServletRequest request = mock(HttpServletRequest.class);
@@ -58,13 +65,16 @@ public class AppointmentBookServletTest {
 
   @Test
   void addAppointment() throws ServletException, IOException {
-   /*
     AppointmentBookServlet servlet = new AppointmentBookServlet();
 
     String owner = "Dave";
     String description = "Teach Java";
+    String startTime = "3/13/2020 3:33 pm";
+    String endTime = "3/13/2020 3:33 pm";
 
-    invokeServletMethod(Map.of("owner", owner, "description", description), servlet::doPost);
+    invokeServletMethod(Map.of("owner", owner, "description", description, "start", startTime, "end", endTime), servlet::doPost);
+    invokeServletMethod(Map.of("owner", owner, "description", description, "start", startTime, "end", endTime), servlet::doGet);
+    invokeServletMethod(Map.of("owner", owner, "start", startTime, "end", endTime), servlet::doGet);
 
     AppointmentBook book = servlet.getAppointmentBook(owner);
     assertThat(book, notNullValue());
@@ -76,7 +86,6 @@ public class AppointmentBookServletTest {
     Appointment appointment = appointments.iterator().next();
     assertThat(appointment.getDescription(), equalTo(description));
 
-    */
 
   }
 

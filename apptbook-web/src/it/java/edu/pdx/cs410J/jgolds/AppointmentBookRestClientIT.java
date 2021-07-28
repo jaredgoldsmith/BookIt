@@ -31,13 +31,14 @@ class AppointmentBookRestClientIT {
     AppointmentBookRestClient client = newAppointmentBookRestClient();
     client.removeAllAppointmentBooks();
   }
-/*
   @Test
   void test2CreateAppointmentBookWithOneAppointment() throws IOException, ParserException {
     AppointmentBookRestClient client = newAppointmentBookRestClient();
     String owner = "Dave";
     String description = "Teach more Java";
-    client.createAppointment(owner, description);
+    String startTime = "3/13/2020 3:33 pm";
+    String endTime = "3/13/2020 3:33 pm";
+    client.createAppointment(owner, description, startTime, endTime);
 
     AppointmentBook book = client.getAppointments(owner);
     assertThat(book.getOwnerName(), equalTo(owner));
@@ -45,12 +46,26 @@ class AppointmentBookRestClientIT {
     Appointment appointment = book.getAppointments().iterator().next();
     assertThat(appointment.getDescription(), equalTo(description));
   }
-*/
+
+  @Test
+  void testSearchingAppointments() throws IOException, ParserException{
+    AppointmentBookRestClient client = newAppointmentBookRestClient();
+    String owner = "Dave";
+    String description = "Teach more Java";
+    String startTime = "3/13/2020 3:33 pm";
+    String endTime = "3/13/2020 4:33 pm";
+    client.createAppointment(owner, description, startTime, endTime);
+    AppointmentBook book = client.getSearchedAppointments(owner, "3/12/2020 3:33 pm", "3/13/2020 4:44 pm");
+    assertThat(book.appointments.get(0).getDescription(), equalTo(description));
+
+  }
+
   @Test
   void test4MissingRequiredParameterReturnsPreconditionFailed() throws IOException {
     AppointmentBookRestClient client = newAppointmentBookRestClient();
     HttpRequestHelper.Response response = client.postToMyURL(Map.of());
     assertThat(response.getCode(), equalTo(HttpURLConnection.HTTP_PRECON_FAILED));
+
   }
 
 }

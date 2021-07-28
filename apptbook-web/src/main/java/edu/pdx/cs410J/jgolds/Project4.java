@@ -55,8 +55,10 @@ public class Project4 {
                     port = Integer.parseInt( portString );
 
                 } catch (NumberFormatException ex) {
-                    usage("Port \"" + portString + "\" must be an integer");
-                    return;
+                    //usage("Port \"" + portString + "\" must be an integer");
+                    System.err.println("Port must be an integer");
+                    //Areturn;
+                    System.exit(1);
                 }
             }
             else if(arg.equals("-search")){
@@ -71,6 +73,10 @@ public class Project4 {
             } else if (!isSearchArg && description == null) {
                 description = arg;
                 appt.addDescription(description);
+                if(!proj.checkDescription(description)){
+                    System.err.println(DESCRIPTION_ARGUMENT_IS_MISSING_FROM_COMMAND_LINE);
+                    System.exit(1);
+                }
             }
             else if(startDate == null){
                 startDate = arg;
@@ -117,8 +123,10 @@ public class Project4 {
                 }
             }
             else {
-                usage("Extraneous command line argument: " + arg);
-                return;
+                System.err.println("There are too many arguments!");
+                System.exit(1);
+                //usage("Extraneous command line argument: " + arg);
+                //return;
             }
         }
         if(owner == null){
@@ -132,6 +140,10 @@ public class Project4 {
                     "owner, if there's already an appointment book for that owner. If you include host and port arguments, " +
                     "and only have the owner argument, the program will pretty print the appointment book for the owner " +
                     "included, if an appointment book exists for that owner.");
+            System.exit(1);
+        }
+        if((!isSearchArg && startDate != null && endAmPm == null) || (description != null && startDate == null)){
+            System.err.println(NOT_ENOUGH_ARGS);
             System.exit(1);
         }
         /*
@@ -469,10 +481,13 @@ public class Project4 {
         if(ch < '0' || ch > '9')
             errorMessage(message);
     }
+
     /**
      * Prints usage information for this program and exits
      * @param message An error message to print
      */
+
+    /*
     private static void usage( String message )
     {
         PrintStream err = System.err;
@@ -493,4 +508,5 @@ public class Project4 {
 
         System.exit(1);
     }
+    */
 }
