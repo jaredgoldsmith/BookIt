@@ -7,6 +7,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+/**
+ * Creates an Appointment object, which inherits the AbstractAppointment class
+ */
 public class Appointment extends AbstractAppointment implements Comparable<Appointment>{
 
     public Appointment(){}

@@ -9,13 +9,30 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+/**
+ * Creates a PrettyPrinter object that takes in an appointment book
+ * and writes out it's contents in a neat presentation style using.
+ * Also contains methods for sorting the appointments by date and
+ * for sorting them within a given timeframe
+ */
 public class PrettyPrinter implements AppointmentBookDumper<AppointmentBook> {
     private final Writer writer;
 
+    /**
+     * Constructor takes in a Writer object
+     * @param writer
+     *  writer begin an object of the Writer class
+     */
     public PrettyPrinter(Writer writer) {
         this.writer = writer;
     }
 
+    /**
+     * Function to take in the appointment book and write out its contents
+     * in a presentational style
+     * @param apptBook
+     * @throws IOException
+     */
     @Override
     public void dump(AppointmentBook apptBook) throws IOException {
         PrintWriter pw = new PrintWriter(this.writer);
@@ -71,6 +88,19 @@ public class PrettyPrinter implements AppointmentBookDumper<AppointmentBook> {
         }
         return appointments;
     }
+
+    /**
+     *
+     * @param appointmentsArg
+     *  Takes in an arrayList of appointments from an appointment book
+     * @param startTime
+     *  All appointments returned must be during or after this time
+     * @param endTime
+     *  All appointments returned must be during or before this time
+     * @return
+     *  Returns the appointments from the appointmentsArg that are
+     *  after the startTime and before the endTime
+     */
     public ArrayList<Appointment> sortAppointmentsByDate(ArrayList<Appointment> appointmentsArg, String startTime, String endTime) {
         ArrayList<Appointment> appointments = new ArrayList<>();
         DateFormat dtf = new SimpleDateFormat("MM/dd/yyyy h:mm a");
@@ -98,13 +128,11 @@ public class PrettyPrinter implements AppointmentBookDumper<AppointmentBook> {
         }
         int i = 0;
         for (int k = 0; k < appointmentsArg.size(); ++k) {
-            if((appointmentsArg.get(k).startOfAppointment.getTime() >= begintime.getTime()) && (appointmentsArg.get(k).endOfAppointment.getTime() <= endtime.getTime())) {
+            if((appointmentsArg.get(k).startOfAppointment.getTime() >= begintime.getTime()) && (appointmentsArg.get(k).startOfAppointment.getTime() <= endtime.getTime())) {
                 appointments.add(i, appointmentsArg.get(k));
                 ++i;
             }
         }
         return appointments;
     }
-
-
 }
