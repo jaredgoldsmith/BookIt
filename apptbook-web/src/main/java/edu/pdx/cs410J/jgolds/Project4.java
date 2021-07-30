@@ -118,7 +118,7 @@ public class Project4 {
             }
         }
         if (owner == null) {
-            System.err.println("There aren't any command line arguments. Need between 5 and 13 args. Mandatory " +
+            System.err.println("There aren't any mandatory command line arguments. Need between 5 and 13 args total. Mandatory " +
                     "arguments should begin with owner, then a description, then a begin date, a begin time, " +
                     "am or pm for start time, an end date, an end time followed by an am or pm for end time. " +
                     "There can also be a -print argument, a -README argument, a -search argument (leave out " +
@@ -134,25 +134,10 @@ public class Project4 {
             System.err.println(NOT_ENOUGH_ARGS);
             System.exit(1);
         }
-        /*
-        if (hostName == null) {
-            usage( MISSING_ARGS );
-            return;
-
-        } else if ( portString == null) {
-            usage( "Missing port" );
-            return;
+        if(isSearchArg && (endAmPm == null)){
+            System.err.println(NOT_ENOUGH_ARGS);
+            System.exit(1);
         }
-        int port;
-        try {
-            port = Integer.parseInt( portString );
-
-        } catch (NumberFormatException ex) {
-            usage("Port \"" + portString + "\" must be an integer");
-            return;
-        }
-
- */
 
         if ((hostName != null && portString == null) || (hostName == null && portString != null)) {
             System.err.println("The host and the port both need to be present or not present");
@@ -178,7 +163,6 @@ public class Project4 {
                         System.err.println(MISSING_ARGS);
                         System.exit(1);
                     } else {
-                        //AppointmentBook book = client.getAppointments(owner);
                         AppointmentBook book = client.getSearchedAppointments(owner, appt.beginTime, appt.endTime);
                         if (book == null) {
                             System.err.println("There is no appointment book for this owner");

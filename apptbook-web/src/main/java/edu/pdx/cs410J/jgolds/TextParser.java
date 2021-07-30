@@ -7,14 +7,31 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
 
+/**
+ * Creates a TextParser object that reads in text and returns an appointment book
+ * This is after the TextDumper object writes out an appointment book, so this
+ * object is in response to that format and must respond in kind or it won't work
+ */
 public class TextParser implements AppointmentBookParser<AppointmentBook> {
     private final Reader reader;
 
+    /**
+     *
+     * @param reader
+     *  Constructor requires a generic Reader object
+     */
     public TextParser(Reader reader) {
         this.reader = reader;
     }
 
 
+    /**
+     * Function that reads the text and return an appointment book
+     * @return
+     *  Returns the appointment book or a null appointment book if there
+     *  is no owner
+     * @throws ParserException
+     */
     @Override
     public AppointmentBook parse() throws ParserException {
         BufferedReader br = new BufferedReader(this.reader);

@@ -52,7 +52,7 @@ public class AppointmentBookServlet extends HttpServlet
             }
             writeSearchAppointments(owner, startTime, endTime, response);
         }
-/*
+        /*
         else if(startTime == null){
             missingRequiredParameter(response, START_PARAMETER);
         }
@@ -67,8 +67,8 @@ public class AppointmentBookServlet extends HttpServlet
     }
 
     /**
-     * Handles an HTTP POST request by storing the dictionary entry for the
-     * "word" and "definition" request parameters.  It writes the dictionary
+     * Handles an HTTP POST request by storing the appointment entry for the
+     * appointment book request parameters.  It writes the appointmentbook
      * entry to the HTTP response.
      */
     @Override
@@ -83,11 +83,6 @@ public class AppointmentBookServlet extends HttpServlet
         }
 
         String description = getParameter(DESCRIPTION_PARAMETER, request );
-        /*if ( description == null) {
-            missingRequiredParameter( response, DESCRIPTION_PARAMETER);
-            return;
-        }
-         */
         String startTime = getParameter(START_PARAMETER, request);
         String endTime = getParameter(END_PARAMETER, request);
 
@@ -118,7 +113,6 @@ public class AppointmentBookServlet extends HttpServlet
 
         PrintWriter pw = response.getWriter();
         pw.println("All Appointment Book entries deleted");
-        //pw.println(Messages.allDictionaryEntriesDeleted());
         pw.flush();
 
         response.setStatus(HttpServletResponse.SC_OK);
@@ -132,8 +126,6 @@ public class AppointmentBookServlet extends HttpServlet
     private void missingRequiredParameter( HttpServletResponse response, String parameterName )
             throws IOException
     {
-        //A
-        // String message = Messages.missingRequiredParameter(parameterName);
         String message = "Missing some arguments";
         response.sendError(HttpServletResponse.SC_PRECONDITION_FAILED, message);
     }
@@ -193,6 +185,13 @@ public class AppointmentBookServlet extends HttpServlet
         return this.books.get(owner);
     }
 
+    /**
+     *  Creates an appointment book and adds an owner to the book
+     * @param owner
+     *  Takes in the owner of the appointment book
+     * @return
+     *  Returns the book back to the calling routine
+     */
     public AppointmentBook createAppointmentBook(String owner) {
         AppointmentBook book = new AppointmentBook(owner);
         this.books.put(owner, book);
