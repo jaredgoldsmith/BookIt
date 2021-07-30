@@ -109,7 +109,7 @@ public class AppointmentBookRestClient extends HttpRequestHelper {
     int code = response.getCode();
     if (code != HTTP_OK) {
       String message = response.getContent();
-      System.err.println("An appointment book does not exist for this owner");
+      System.err.println("A connection to the server has failed, likely an appointment book does not exist for this owner");
       System.exit(1);
       throw new RestException(code, message);
     }
