@@ -1,5 +1,6 @@
 package edu.pdx.cs410J.jgolds;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -9,10 +10,16 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+
 public class AppointmentActivity extends AppCompatActivity {
 
     public static final String EXTRA_APPOINTMENT = "Appointment";
     private Appointment appt;
+    private AppointmentBook apptBook;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,11 +30,11 @@ public class AppointmentActivity extends AppCompatActivity {
     }
 
     protected void sendAppointmentBack(){
-        this.appt = getAppointment();
+        Appointment appointment = getAppointment();
         Intent intent = new Intent();
         EditText owner = findViewById(R.id.owner);
         String bookOwner = owner.getText().toString();
-        intent.putExtra(EXTRA_APPOINTMENT, this.appt);
+        intent.putExtra(EXTRA_APPOINTMENT, appointment);
         setResult(RESULT_OK, intent);
         finish();
     }
@@ -43,7 +50,53 @@ public class AppointmentActivity extends AppCompatActivity {
         EditText endDate = findViewById(R.id.endDate);
         EditText endTime = findViewById(R.id.endTime);
         EditText endAmPm = findViewById(R.id.endAmPm);
-        appointment.addBeginTime(endDate.getText().toString(),endTime.getText().toString(),endAmPm.getText().toString());
+        appointment.addEndTime(endDate.getText().toString(),endTime.getText().toString(),endAmPm.getText().toString());
+        this.appt = appointment;
+        //File contextDirectory = getApplicationContext().getDataDir();
+        EditText owner = findViewById(R.id.owner);
+        String bookOwner = owner.getText().toString();
+        String fileName = bookOwner + ".txt";
+        this.apptBook = new AppointmentBook(bookOwner);
+        apptBook.addAppointment(this.appt);
+        try {
+            writeSumsToFile(fileName);
+        }
+        catch(IOException e){
+            displayErrorMessage("Cannot open file");
+        }
+        //File file = new File(contextDirectory, bookOwner + ".txt");
+
         return appointment;
+    }
+    private void writeSumsToFile(String fileName) throws IOException {
+        File sumsFile = getSumsFile(fileName);
+
+        TextDumper dumper = new TextDumper(sumsFile);
+        dumper.dump(this.apptBook);
+        /*
+        try (
+                //PrintWriter pw = new PrintWriter(new FileWriter(sumsFile))
+        //        TextDumper dumper = new TextDumper(fileName);
+        ) {
+            //for (int i = 0; i < this.sums.getCount(); i++) {
+            //    Double sum = this.sums.getItem(i);
+            //    pw.println(sum);
+            //}
+            //pw.println(this.appt.description);
+            //pw.flush();
+        }
+
+         */
+    }
+    @NonNull
+    private File getSumsFile(String fileName) {
+        File contextDirectory = getApplicationContext().getDataDir();
+        //File sumsFile =
+        return new File(contextDirectory, fileName);
+        //return sumsFile;
+    }
+
+    private void displayErrorMessage(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
 }

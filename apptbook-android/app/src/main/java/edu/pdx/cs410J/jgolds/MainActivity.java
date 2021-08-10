@@ -32,7 +32,8 @@ public class MainActivity extends AppCompatActivity {
     //private AppBarConfiguration appBarConfiguration;
     public static final int GET_SUM_FROM_CALCULATOR = 42;
     private ActivityMainBinding binding;
-
+    private ArrayAdapter<Double> sums;
+    private Appointment appt;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,36 +67,135 @@ public class MainActivity extends AppCompatActivity {
                 startActivityForResult(intent, GET_SUM_FROM_CALCULATOR); }
         }
         );
-        launchCalculator.setOnClickListener(new View.OnClickListener(){
+        launchCalculator.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, CalculatorActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent, GET_SUM_FROM_CALCULATOR);
             }
-        }
+        });
 
-        );
+        this.sums = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
+        try {
+            loadSumsFromFile();
+        } catch (IOException e) {
+            toast("While reading file: " + e.getMessage());
+        }
+        ListView listOfSums = findViewById(R.id.sums);
+        listOfSums.setAdapter(this.sums);
+        listOfSums.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Object item = adapterView.getAdapter().getItem(i);
+                String message = "Selected item " + i + ": " + item;
+                toast(message);
+            }
+        });
     }
 
-    private void toast(String message){
+    private void toast(String message) {
         Toast.makeText(MainActivity.this, message, Toast.LENGTH_LONG).show();
     }
-
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data){
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        System.out.println("HYYY");
-        if(resultCode == RESULT_OK && requestCode == GET_SUM_FROM_CALCULATOR && data != null){
-            Appointment appt = (Appointment) data.getSerializableExtra(AppointmentActivity.EXTRA_APPOINTMENT);
-            toast("Appointment: " + appt);
-        }
-        /*
-        Appointment appt = (Appointment) data.getSerializableExtra((AppointmentActivity.EXTRA_APPOINTMENT));
-        toast("Appointment: " + appt);
+        if (resultCode == RESULT_OK && requestCode == GET_SUM_FROM_CALCULATOR && data != null) {
+            double sum = data.getDoubleExtra(CalculatorActivity.EXTRA_SUM, 0.0);
+            this.sums.add(sum);
+            try {
+                writeSumsToFile();
+            } catch (IOException e) {
+                toast("While writing to file: " + e.getMessage());
+            }
 
-         */
+            //Appointment appointment = (Appointment) data.getSerializableExtra(CalculatorActivity.EXTRA_APPOINTMENT);
+            Appointment appointment = (Appointment) data.getSerializableExtra(AppointmentActivity.EXTRA_APPOINTMENT);
+            this.appt = appointment;
+            toast("Got appointment: " + appointment);
+            try{
+                writeAppointmentToFile();
+            }
+            catch(IOException e){
+                toast("While writing to file: " + e.getMessage());
+            }
+        }
     }
+
+    private void writeAppointmentToFile() throws IOException {
+        File appointmentFile = getAppointmentFile();
+        try (
+                PrintWriter pw = new PrintWriter(new FileWriter(appointmentFile))
+        ) {
+            /*
+            for (int i = 0; i < this.sums.getCount(); i++) {
+                Double sum = this.sums.getItem(i);
+                pw.println(sum);
+            }
+
+             */
+            pw.println(this.appt.description);
+            pw.flush();
+        }
+    }
+
+    @NonNull
+    private File getAppointmentFile() {
+        File contextDirectory = getApplicationContext().getDataDir();
+        File sumsFile = new File(contextDirectory, "appointment.txt");
+        return sumsFile;
+    }
+
+/*
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == RESULT_OK && requestCode == GET_SUM_FROM_CALCULATOR && data != null) {
+            Appointment appointment = (Appointment) data.getSerializableExtra(AppointmentActivity.EXTRA_APPOINTMENT);
+            toast("Got appointment: " + appointment);
+        }
+    }
+
+ */
+    private void loadSumsFromFile() throws IOException {
+        File sumsFile = getSumsFile();
+        if (!sumsFile.exists()) {
+            return;
+        }
+
+        try (
+                BufferedReader br = new BufferedReader(new FileReader(sumsFile))
+        ) {
+            String line = br.readLine();
+            while(line != null) {
+                Double sum = Double.parseDouble(line);
+                this.sums.add(sum);
+                line = br.readLine();
+            }
+        }
+    }
+
+    private void writeSumsToFile() throws IOException {
+        File sumsFile = getSumsFile();
+        try (
+                PrintWriter pw = new PrintWriter(new FileWriter(sumsFile))
+        ) {
+            for (int i = 0; i < this.sums.getCount(); i++) {
+                Double sum = this.sums.getItem(i);
+                pw.println(sum);
+            }
+            pw.flush();
+        }
+    }
+
+    @NonNull
+    private File getSumsFile() {
+        File contextDirectory = getApplicationContext().getDataDir();
+        File sumsFile = new File(contextDirectory, "sums.txt");
+        return sumsFile;
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
