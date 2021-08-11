@@ -119,7 +119,13 @@ public class AppointmentActivity extends AppCompatActivity {
             return null;
         }
         appointment.addEndTime(endDate.getText().toString(),endTime.getText().toString(),endAmPm.getText().toString());
+        Long difference = appointment.endOfAppointment.getTime() - appointment.startOfAppointment.getTime();
+        if(difference < 0){
+            displayErrorMessage("The end of the appointment cannot be before the beginning of the appointment");
+            return null;
+        }
         this.appt = appointment;
+
         //File contextDirectory = getApplicationContext().getDataDir();
         EditText owner = findViewById(R.id.owner);
         String ownerString = owner.getText().toString();

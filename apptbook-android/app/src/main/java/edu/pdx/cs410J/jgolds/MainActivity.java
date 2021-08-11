@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        Button launchCalculator = findViewById(R.id.launch_calculator);
+        //Button launchCalculator = findViewById(R.id.launch_calculator);
         Button launchAddAppointment = findViewById(R.id.launch_add_appointment);
         launchAddAppointment.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
                                                startActivity(intent); }
                                        }
         );
-
+/*
         launchCalculator.setOnClickListener(new View.OnClickListener() {
     @Override
             public void onClick(View view) {
@@ -90,6 +90,8 @@ public class MainActivity extends AppCompatActivity {
                 startActivityForResult(intent, GET_SUM_FROM_CALCULATOR);
             }
         });
+
+ */
 /*
         this.sums = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
         try {
@@ -229,7 +231,9 @@ public class MainActivity extends AppCompatActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
+        toast("Please use this app for organizing your appointments. You can choose \n" +
+                "to add an appointment book, display an appointment book for a particular \n" +
+                "person, or search for appointments for a specific appointment book owner");
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
