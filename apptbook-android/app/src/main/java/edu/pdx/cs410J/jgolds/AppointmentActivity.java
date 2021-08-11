@@ -47,6 +47,24 @@ public class AppointmentActivity extends AppCompatActivity {
         else{
             toast("No appointment was added");
         }
+
+        EditText owner = findViewById(R.id.owner);
+        owner.getText().clear();
+        EditText description = findViewById(R.id.description);
+        description.getText().clear();
+        EditText startDate = findViewById(R.id.startDate);
+        startDate.getText().clear();
+        EditText startTime = findViewById(R.id.startTime);
+        startTime.getText().clear();
+        EditText startAmPm = findViewById(R.id.startAmPm);
+        startAmPm.getText().clear();
+        EditText endDate = findViewById(R.id.endDate);
+        endDate.getText().clear();
+        EditText endTime = findViewById(R.id.endTime);
+        endTime.getText().clear();
+        EditText endAmPm = findViewById(R.id.endAmPm);
+        endAmPm.getText().clear();
+
     }
     private void toast(String message) {
         Toast.makeText(AppointmentActivity.this, message, Toast.LENGTH_LONG).show();
@@ -56,8 +74,12 @@ public class AppointmentActivity extends AppCompatActivity {
         Appointment appointment = new Appointment();
         DateTimeHelper helper = new DateTimeHelper();
 
-
         EditText description = findViewById(R.id.description);
+        String descriptionString = description.getText().toString();
+        if(descriptionString == null || descriptionString.equals("")){
+            displayErrorMessage("Description is not filled in");
+            return null;
+        }
         appointment.addDescription(description.getText().toString());
         EditText startDate = findViewById(R.id.startDate);
         String startDateString = startDate.getText().toString();
@@ -87,7 +109,7 @@ public class AppointmentActivity extends AppCompatActivity {
         EditText endTime = findViewById(R.id.endTime);
         String endTimeString = endTime.getText().toString();
         if(!helper.parseTimes(endTimeString)){
-            displayErrorMessage("Incorrect time formate");
+            displayErrorMessage("Incorrect time format");
             return null;
         }
         EditText endAmPm = findViewById(R.id.endAmPm);
@@ -100,6 +122,11 @@ public class AppointmentActivity extends AppCompatActivity {
         this.appt = appointment;
         //File contextDirectory = getApplicationContext().getDataDir();
         EditText owner = findViewById(R.id.owner);
+        String ownerString = owner.getText().toString();
+        if(ownerString == null || ownerString.equals("")){
+            displayErrorMessage("Owner was not entered");
+            return null;
+        }
         this.bookOwner = owner.getText().toString();
         String fileName = this.bookOwner + ".txt";
         //this.apptBook = new AppointmentBook(bookOwner);

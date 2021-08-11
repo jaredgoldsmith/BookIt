@@ -8,6 +8,8 @@ import edu.pdx.cs410J.ParserException;
 import edu.pdx.cs410J.AppointmentBookParser;
 import java.io.*;
 import java.lang.Object;
+import java.util.ArrayList;
+
 import android.content.*;
 
 /**
@@ -108,5 +110,26 @@ public class TextParser implements AppointmentBookParser<AppointmentBook> {
             System.exit(1);
         }
         return apptbook;
+    }
+
+    public ArrayList<Appointment> sortAppointments(ArrayList<Appointment> appointmentsArg){
+        ArrayList<Appointment> appointments= new ArrayList<>();
+        for(int k = 0; k < appointmentsArg.size(); ++k){
+            appointments.add(k, appointmentsArg.get(k));
+        }
+        int i;
+        int j;
+        Appointment hold;
+
+        for(i = 0; i < appointments.size() -1; ++i) {
+            for (j = 0; j < appointments.size() - i -1; ++j) {
+                if((appointments.get(j).compareTo(appointments.get(j+1)) > 0)){
+                    hold = appointments.get(j);
+                    appointments.set(j, appointments.get(j+1));
+                    appointments.set(j+1, hold);
+                }
+            }
+        }
+        return appointments;
     }
 }

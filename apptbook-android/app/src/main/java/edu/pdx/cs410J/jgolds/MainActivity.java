@@ -2,6 +2,7 @@ package edu.pdx.cs410J.jgolds;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -67,8 +68,17 @@ public class MainActivity extends AppCompatActivity {
                 startActivityForResult(intent, GET_SUM_FROM_CALCULATOR); }
         }
         );
-        launchCalculator.setOnClickListener(new View.OnClickListener() {
+
+        Button displayBook = findViewById(R.id.launch_display);
+        displayBook.setOnClickListener(new View.OnClickListener() {
             @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, DisplayBookActivity.class);
+                startActivity(intent); }
+        }
+);
+launchCalculator.setOnClickListener(new View.OnClickListener() {
+    @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, CalculatorActivity.class);
                 startActivityForResult(intent, GET_SUM_FROM_CALCULATOR);
