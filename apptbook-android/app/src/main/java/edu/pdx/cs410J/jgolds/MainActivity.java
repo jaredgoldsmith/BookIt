@@ -2,14 +2,11 @@ package edu.pdx.cs410J.jgolds;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -77,7 +74,16 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent); }
         }
 );
-launchCalculator.setOnClickListener(new View.OnClickListener() {
+        Button searchAppointments = findViewById(R.id.launch_search_appointments);
+        searchAppointments.setOnClickListener(new View.OnClickListener() {
+                                           @Override
+                                           public void onClick(View view) {
+                                               Intent intent = new Intent(MainActivity.this, SearchAppointmentsActivity.class);
+                                               startActivity(intent); }
+                                       }
+        );
+
+        launchCalculator.setOnClickListener(new View.OnClickListener() {
     @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, CalculatorActivity.class);

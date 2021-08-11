@@ -22,4 +22,6 @@
     <string name="submit">Submit</string>
     <string name="return_to_main">return to main</string>
     <string name="who_s_appointment_book_would_you_like_to_display">Who\'s appointment book would you like to display?</string>
+    <string name="search_appointments">Search Appointments</string>
+    <string name="display_book">Display Book</string>
 </resources>

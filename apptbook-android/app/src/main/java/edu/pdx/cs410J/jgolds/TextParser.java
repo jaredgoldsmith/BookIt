@@ -8,7 +8,11 @@ import edu.pdx.cs410J.ParserException;
 import edu.pdx.cs410J.AppointmentBookParser;
 import java.io.*;
 import java.lang.Object;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import android.content.*;
 
@@ -128,6 +132,41 @@ public class TextParser implements AppointmentBookParser<AppointmentBook> {
                     appointments.set(j, appointments.get(j+1));
                     appointments.set(j+1, hold);
                 }
+            }
+        }
+        return appointments;
+    }
+
+    public ArrayList<Appointment> sortAppointmentsByDate(ArrayList<Appointment> appointmentsArg, String startTime, String endTime) {
+        ArrayList<Appointment> appointments = new ArrayList<>();
+        DateFormat dtf = new SimpleDateFormat("MM/dd/yyyy h:mm a");
+        Date begintime = null;
+        try {
+            begintime = dtf.parse(startTime);
+        } catch (ParseException e) {
+            System.err.println("Incorrect start date conversion");
+            System.exit(1);
+        }
+        Date endtime = null;
+        try {
+            endtime = dtf.parse(endTime);
+        } catch (ParseException e) {
+            System.err.println("Incorrect end date conversion");
+            System.exit(1);
+        }
+        if(endtime == null){
+            System.err.println("Failed converting string into date");
+            System.exit(1);
+        }
+        if(begintime == null){
+            System.err.println("Failed converting string into date");
+            System.exit(1);
+        }
+        int i = 0;
+        for (int k = 0; k < appointmentsArg.size(); ++k) {
+            if((appointmentsArg.get(k).startOfAppointment.getTime() >= begintime.getTime()) && (appointmentsArg.get(k).startOfAppointment.getTime() <= endtime.getTime())) {
+                appointments.add(i, appointmentsArg.get(k));
+                ++i;
             }
         }
         return appointments;

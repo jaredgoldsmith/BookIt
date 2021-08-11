@@ -11,8 +11,10 @@
         android:textAlignment="center"
         android:theme="@style/Theme.AppointmentBook">
         <activity
-            android:name=".SearchAppointments"
-            android:exported="true" />
+            android:name=".SearchAppointmentsActivity"
+            android:exported="true"
+            android:label="Search Appointments"
+            android:windowSoftInputMode="adjustNothing" />
         <activity
             android:name=".DisplayBookActivity"
             android:exported="true"
