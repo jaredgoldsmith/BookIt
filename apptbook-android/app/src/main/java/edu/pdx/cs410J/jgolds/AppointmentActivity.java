@@ -14,12 +14,14 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import edu.pdx.cs410J.ParserException;
 
 public class AppointmentActivity extends AppCompatActivity {
 
     public static final String EXTRA_APPOINTMENT = "Appointment";
     private Appointment appt;
     private AppointmentBook apptBook;
+    private String bookOwner;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,35 +33,79 @@ public class AppointmentActivity extends AppCompatActivity {
 
     protected void sendAppointmentBack(){
         Appointment appointment = getAppointment();
-        Intent intent = new Intent();
+        /*Intent intent = new Intent();
         EditText owner = findViewById(R.id.owner);
-        String bookOwner = owner.getText().toString();
+        this.bookOwner = owner.getText().toString();
         intent.putExtra(EXTRA_APPOINTMENT, appointment);
         setResult(RESULT_OK, intent);
         finish();
+
+         */
+        if(appointment != null){
+            toast("Got appointment: " + appointment);
+        }
+        else{
+            toast("No appointment was added");
+        }
     }
+    private void toast(String message) {
+        Toast.makeText(AppointmentActivity.this, message, Toast.LENGTH_LONG).show();
+    }
+
     protected Appointment getAppointment(){
         Appointment appointment = new Appointment();
+        DateTimeHelper helper = new DateTimeHelper();
+
 
         EditText description = findViewById(R.id.description);
         appointment.addDescription(description.getText().toString());
         EditText startDate = findViewById(R.id.startDate);
+        String startDateString = startDate.getText().toString();
+        if(!helper.parseDates(startDateString)) {
+            displayErrorMessage("Incorrect date format");
+            return null;
+        }
         EditText startTime = findViewById(R.id.startTime);
+        String startTimeString = startTime.getText().toString();
+        if(!helper.parseTimes(startTimeString)){
+            displayErrorMessage("Incorrect time format");
+            return null;
+        }
         EditText startAmPm = findViewById(R.id.startAmPm);
+        String startAmPmString = startAmPm.getText().toString();
+        if(!(startAmPmString.equals("am") || startAmPmString.equals("pm"))){
+            displayErrorMessage("Needs to be 'am' or 'pm' following the time");
+            return null;
+        }
         appointment.addBeginTime(startDate.getText().toString(),startTime.getText().toString(),startAmPm.getText().toString());
         EditText endDate = findViewById(R.id.endDate);
+        String endDateString = endDate.getText().toString();
+        if(!helper.parseDates(endDateString)){
+            displayErrorMessage("Incorrect date format");
+            return  null;
+        }
         EditText endTime = findViewById(R.id.endTime);
+        String endTimeString = endTime.getText().toString();
+        if(!helper.parseTimes(endTimeString)){
+            displayErrorMessage("Incorrect time formate");
+            return null;
+        }
         EditText endAmPm = findViewById(R.id.endAmPm);
+        String endAmPmString = endAmPm.getText().toString();
+        if(!(endAmPmString.equals("am") || endAmPmString.equals("pm"))){
+            displayErrorMessage("Needs to be 'am' or 'pm' following the time");
+            return null;
+        }
         appointment.addEndTime(endDate.getText().toString(),endTime.getText().toString(),endAmPm.getText().toString());
         this.appt = appointment;
         //File contextDirectory = getApplicationContext().getDataDir();
         EditText owner = findViewById(R.id.owner);
-        String bookOwner = owner.getText().toString();
-        String fileName = bookOwner + ".txt";
-        this.apptBook = new AppointmentBook(bookOwner);
-        apptBook.addAppointment(this.appt);
+        this.bookOwner = owner.getText().toString();
+        String fileName = this.bookOwner + ".txt";
+        //this.apptBook = new AppointmentBook(bookOwner);
+        //apptBook.addAppointment(this.appt);
         try {
-            writeSumsToFile(fileName);
+            writeAppointmentToFile(fileName);
         }
         catch(IOException e){
             displayErrorMessage("Cannot open file");
@@ -68,11 +114,28 @@ public class AppointmentActivity extends AppCompatActivity {
 
         return appointment;
     }
-    private void writeSumsToFile(String fileName) throws IOException {
-        File sumsFile = getSumsFile(fileName);
+    private void writeAppointmentToFile(String fileName) throws IOException {
+        File file = getAppointmentFile(fileName);
 
-        TextDumper dumper = new TextDumper(sumsFile);
-        dumper.dump(this.apptBook);
+        if(!file.exists()) {
+            TextDumper dumper = new TextDumper(file);
+            this.apptBook = new AppointmentBook(this.bookOwner);
+            this.apptBook.addAppointment(this.appt);
+            dumper.dump(this.apptBook);
+        }
+        else{
+            TextParser parser = new TextParser(file);
+            try {
+                this.apptBook = new AppointmentBook();
+                this.apptBook = parser.parse();
+            }
+            catch(ParserException e){
+               displayErrorMessage("Couldn't parse the owner's file");
+            }
+            this.apptBook.addAppointment(this.appt);
+            TextDumper dumper = new TextDumper(file);
+            dumper.dump(this.apptBook);
+        }
         /*
         try (
                 //PrintWriter pw = new PrintWriter(new FileWriter(sumsFile))
@@ -89,7 +152,7 @@ public class AppointmentActivity extends AppCompatActivity {
          */
     }
     @NonNull
-    private File getSumsFile(String fileName) {
+    private File getAppointmentFile(String fileName) {
         File contextDirectory = getApplicationContext().getDataDir();
         //File sumsFile =
         return new File(contextDirectory, fileName);

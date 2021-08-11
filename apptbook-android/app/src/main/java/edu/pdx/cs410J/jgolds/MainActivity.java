@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivityForResult(intent, GET_SUM_FROM_CALCULATOR);
             }
         });
-
+/*
         this.sums = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
         try {
             loadSumsFromFile();
@@ -91,6 +91,8 @@ public class MainActivity extends AppCompatActivity {
                 toast(message);
             }
         });
+
+ */
     }
 
     private void toast(String message) {
@@ -101,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (resultCode == RESULT_OK && requestCode == GET_SUM_FROM_CALCULATOR && data != null) {
-            double sum = data.getDoubleExtra(CalculatorActivity.EXTRA_SUM, 0.0);
+            /*double sum = data.getDoubleExtra(CalculatorActivity.EXTRA_SUM, 0.0);
             this.sums.add(sum);
             try {
                 writeSumsToFile();
@@ -109,6 +111,8 @@ public class MainActivity extends AppCompatActivity {
                 toast("While writing to file: " + e.getMessage());
             }
 
+
+             */
             //Appointment appointment = (Appointment) data.getSerializableExtra(CalculatorActivity.EXTRA_APPOINTMENT);
             Appointment appointment = (Appointment) data.getSerializableExtra(AppointmentActivity.EXTRA_APPOINTMENT);
             this.appt = appointment;
