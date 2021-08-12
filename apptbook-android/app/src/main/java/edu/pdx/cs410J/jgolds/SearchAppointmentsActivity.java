@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import edu.pdx.cs410J.ParserException;
 
 public class SearchAppointmentsActivity extends AppCompatActivity {
+    public static final String ALL_FIELDS_NEED_TO_BE_ENTERED = "All fields need to be entered";
     private AppointmentBook apptBook;
     private String searchStartTime;
     private String searchEndTime;
@@ -62,18 +63,30 @@ public class SearchAppointmentsActivity extends AppCompatActivity {
 
         EditText startDate = findViewById(R.id.searchStartDate);
         String startDateString = startDate.getText().toString();
+        if(startDateString == null || startDateString.equals("")){
+            displayErrorMessage(ALL_FIELDS_NEED_TO_BE_ENTERED);
+            return;
+        }
         if(!helper.parseDates(startDateString)) {
             displayErrorMessage("Incorrect date format");
             return;
         }
         EditText startTime = findViewById(R.id.searchStartTime);
         String startTimeString = startTime.getText().toString();
+        if(startTimeString == null || startTimeString.equals("")){
+            displayErrorMessage(ALL_FIELDS_NEED_TO_BE_ENTERED);
+            return;
+        }
         if(!helper.parseTimes(startTimeString)){
             displayErrorMessage("Incorrect time format");
             return;
         }
         EditText startAmPm = findViewById(R.id.searchStartAmPm);
         String startAmPmString = startAmPm.getText().toString();
+        if(startAmPmString == null || startAmPmString.equals("")){
+            displayErrorMessage(ALL_FIELDS_NEED_TO_BE_ENTERED);
+            return;
+        }
         if(!(startAmPmString.equals("am") || startAmPmString.equals("pm"))){
             displayErrorMessage("Needs to be 'am' or 'pm' following the time");
             return;
@@ -81,18 +94,30 @@ public class SearchAppointmentsActivity extends AppCompatActivity {
         this.searchStartTime = startDateString + " " + startTimeString + " " + startAmPmString;
         EditText endDate = findViewById(R.id.searchEndDate);
         String endDateString = endDate.getText().toString();
+        if(endDateString == null || endDateString.equals("")){
+            displayErrorMessage(ALL_FIELDS_NEED_TO_BE_ENTERED);
+            return;
+        }
         if(!helper.parseDates(endDateString)){
             displayErrorMessage("Incorrect date format");
             return;
         }
         EditText endTime = findViewById(R.id.searchEndTime);
         String endTimeString = endTime.getText().toString();
+        if(endTimeString == null || endTimeString.equals("")){
+            displayErrorMessage(ALL_FIELDS_NEED_TO_BE_ENTERED);
+            return;
+        }
         if(!helper.parseTimes(endTimeString)){
             displayErrorMessage("Incorrect time format");
             return;
         }
         EditText endAmPm = findViewById(R.id.searchEndAmPm);
         String endAmPmString = endAmPm.getText().toString();
+        if(endAmPmString == null || endAmPmString.equals("")){
+            displayErrorMessage(ALL_FIELDS_NEED_TO_BE_ENTERED);
+            return;
+        }
         if(!(endAmPmString.equals("am") || endAmPmString.equals("pm"))){
             displayErrorMessage("Needs to be 'am' or 'pm' following the time");
             return;
@@ -111,7 +136,7 @@ public class SearchAppointmentsActivity extends AppCompatActivity {
         String fileName = owner.getText().toString();
         String ownerString = fileName;
         if (fileName.equals("")) {
-            displayErrorMessage("Owner field needs to be filled in");
+            displayErrorMessage("Owner field needs to be filled in. \nMake sure to enter all the fields within the gray boxes");
             return null;
         }
         fileName += ".txt";
@@ -132,6 +157,10 @@ public class SearchAppointmentsActivity extends AppCompatActivity {
         ArrayList<Appointment> appointments = new ArrayList<>();
         appointments = parser.sortAppointments(this.apptBook.appointments);
         this.apptBook.appointments = appointments;
+        if(this.searchStartTime == null)
+            return null;
+        if(this.searchEndTime == null)
+            return null;
         appointments = parser.sortAppointmentsByDate(this.apptBook.appointments,this.searchStartTime,this.searchEndTime);
         this.apptBook.appointments = appointments;
         String prettyBegin;

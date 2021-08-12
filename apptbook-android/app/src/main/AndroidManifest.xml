@@ -11,6 +11,11 @@
         android:textAlignment="center"
         android:theme="@style/Theme.AppointmentBook">
         <activity
+            android:name=".READMEActivity"
+            android:exported="true"
+            android:label="README"
+            />
+        <activity
             android:name=".SearchAppointmentsActivity"
             android:exported="true"
             android:label="Search Appointments"

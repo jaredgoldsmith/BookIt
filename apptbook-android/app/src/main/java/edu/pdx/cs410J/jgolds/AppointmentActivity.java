@@ -19,6 +19,7 @@ import edu.pdx.cs410J.ParserException;
 public class AppointmentActivity extends AppCompatActivity {
 
     public static final String EXTRA_APPOINTMENT = "Appointment";
+    public static final String ALL_FIELDS_NEED_TO_BE_ENTERED = "All fields need to be entered";
     private Appointment appt;
     private AppointmentBook apptBook;
     private String bookOwner;
@@ -42,7 +43,7 @@ public class AppointmentActivity extends AppCompatActivity {
 
          */
         if(appointment != null){
-            toast("Got appointment: " + appointment);
+            toast("Successfully added appointment for " + this.bookOwner + "!\n" + appointment.toString());
         }
         else{
             toast("No appointment was added");
@@ -74,27 +75,49 @@ public class AppointmentActivity extends AppCompatActivity {
         Appointment appointment = new Appointment();
         DateTimeHelper helper = new DateTimeHelper();
 
+        EditText owner = findViewById(R.id.owner);
+        String ownerString = owner.getText().toString();
+        if(ownerString == null || ownerString.equals("")){
+            displayErrorMessage(ALL_FIELDS_NEED_TO_BE_ENTERED + "\nPlease input the information in the gray boxes");
+            return null;
+        }
+        this.bookOwner = owner.getText().toString();
+        String fileName = this.bookOwner + ".txt";
+
         EditText description = findViewById(R.id.description);
         String descriptionString = description.getText().toString();
         if(descriptionString == null || descriptionString.equals("")){
-            displayErrorMessage("Description is not filled in");
+            displayErrorMessage(ALL_FIELDS_NEED_TO_BE_ENTERED);
             return null;
         }
         appointment.addDescription(description.getText().toString());
         EditText startDate = findViewById(R.id.startDate);
         String startDateString = startDate.getText().toString();
+
+        if(startDateString == null || startDateString.equals("")){
+            displayErrorMessage(ALL_FIELDS_NEED_TO_BE_ENTERED);
+            return null;
+        }
         if(!helper.parseDates(startDateString)) {
             displayErrorMessage("Incorrect date format");
             return null;
         }
         EditText startTime = findViewById(R.id.startTime);
         String startTimeString = startTime.getText().toString();
+        if(startTimeString == null || startTimeString.equals("")){
+            displayErrorMessage(ALL_FIELDS_NEED_TO_BE_ENTERED);
+            return null;
+        }
         if(!helper.parseTimes(startTimeString)){
             displayErrorMessage("Incorrect time format");
             return null;
         }
         EditText startAmPm = findViewById(R.id.startAmPm);
         String startAmPmString = startAmPm.getText().toString();
+        if(startAmPmString == null || startAmPmString.equals("")){
+            displayErrorMessage(ALL_FIELDS_NEED_TO_BE_ENTERED);
+            return null;
+        }
         if(!(startAmPmString.equals("am") || startAmPmString.equals("pm"))){
             displayErrorMessage("Needs to be 'am' or 'pm' following the time");
             return null;
@@ -102,18 +125,30 @@ public class AppointmentActivity extends AppCompatActivity {
         appointment.addBeginTime(startDate.getText().toString(),startTime.getText().toString(),startAmPm.getText().toString());
         EditText endDate = findViewById(R.id.endDate);
         String endDateString = endDate.getText().toString();
+        if(endDateString == null || endDateString.equals("")){
+            displayErrorMessage(ALL_FIELDS_NEED_TO_BE_ENTERED);
+            return null;
+        }
         if(!helper.parseDates(endDateString)){
             displayErrorMessage("Incorrect date format");
             return  null;
         }
         EditText endTime = findViewById(R.id.endTime);
         String endTimeString = endTime.getText().toString();
+        if(endTimeString == null || endTimeString.equals("")){
+            displayErrorMessage(ALL_FIELDS_NEED_TO_BE_ENTERED);
+            return null;
+        }
         if(!helper.parseTimes(endTimeString)){
             displayErrorMessage("Incorrect time format");
             return null;
         }
         EditText endAmPm = findViewById(R.id.endAmPm);
         String endAmPmString = endAmPm.getText().toString();
+        if(endAmPmString == null || endAmPmString.equals("")){
+            displayErrorMessage(ALL_FIELDS_NEED_TO_BE_ENTERED);
+            return null;
+        }
         if(!(endAmPmString.equals("am") || endAmPmString.equals("pm"))){
             displayErrorMessage("Needs to be 'am' or 'pm' following the time");
             return null;
@@ -127,6 +162,7 @@ public class AppointmentActivity extends AppCompatActivity {
         this.appt = appointment;
 
         //File contextDirectory = getApplicationContext().getDataDir();
+        /*
         EditText owner = findViewById(R.id.owner);
         String ownerString = owner.getText().toString();
         if(ownerString == null || ownerString.equals("")){
@@ -135,6 +171,8 @@ public class AppointmentActivity extends AppCompatActivity {
         }
         this.bookOwner = owner.getText().toString();
         String fileName = this.bookOwner + ".txt";
+
+         */
         //this.apptBook = new AppointmentBook(bookOwner);
         //apptBook.addAppointment(this.appt);
         try {

@@ -179,7 +179,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
- */
     private void loadSumsFromFile() throws IOException {
         File sumsFile = getSumsFile();
         if (!sumsFile.exists()) {
@@ -217,7 +216,7 @@ public class MainActivity extends AppCompatActivity {
         File sumsFile = new File(contextDirectory, "sums.txt");
         return sumsFile;
     }
-
+*/
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -234,8 +233,14 @@ public class MainActivity extends AppCompatActivity {
         toast("Please use this app for organizing your appointments. You can choose \n" +
                 "to add an appointment book, display an appointment book for a particular \n" +
                 "person, or search for appointments for a specific appointment book owner");
+       /* Intent launchNewIntent = new Intent(MainActivity.this,READMEActivity.class);
+        startActivity(launchNewIntent);
+
+        */
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Intent launchNewIntent = new Intent(MainActivity.this,READMEActivity.class);
+            startActivity(launchNewIntent);
             return true;
         }
 

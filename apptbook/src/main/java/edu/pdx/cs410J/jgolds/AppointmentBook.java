@@ -12,6 +12,7 @@ import edu.pdx.cs410J.AbstractAppointmentBook;
 public class AppointmentBook extends AbstractAppointmentBook<Appointment>{
    protected String owner;
    protected ArrayList<Appointment> appointments = new ArrayList<>();
+   protected Collection<Object> strings = new ArrayList<Object>();
    public AppointmentBook(){
       this.owner = null;
    }
