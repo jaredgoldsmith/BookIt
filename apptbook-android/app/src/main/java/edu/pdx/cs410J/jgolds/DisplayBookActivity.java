@@ -104,9 +104,7 @@ public class DisplayBookActivity extends AppCompatActivity {
     @NonNull
     private File getAppointmentFile(String fileName) {
         File contextDirectory = getApplicationContext().getDataDir();
-        //File sumsFile =
         return new File(contextDirectory, fileName);
-        //return sumsFile;
     }
 
     private void displayErrorMessage(String message) {

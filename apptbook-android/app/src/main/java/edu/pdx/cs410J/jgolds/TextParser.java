@@ -1,20 +1,13 @@
 package edu.pdx.cs410J.jgolds;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import android.content.Intent;
-import android.os.Bundle;
 import edu.pdx.cs410J.ParserException;
 import edu.pdx.cs410J.AppointmentBookParser;
 import java.io.*;
-import java.lang.Object;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-
-import android.content.*;
 
 /**
  * Creates a TextParser Object with a filename String sent in as a constructor argument.
@@ -41,15 +34,12 @@ public class TextParser implements AppointmentBookParser<AppointmentBook> {
      */
     @Override
     public AppointmentBook parse() throws ParserException{
-        //Project3 proj = new Project3();
         String [] split;
-        //File file = new File(fileName);
+        DateTimeHelper proj = new DateTimeHelper();
 
         try{
             BufferedReader br;
             ParserException e = new ParserException(fileString);
-            //if(!file.exists())
-             //   throw(e);
             br = new BufferedReader(new FileReader(fileName));
             if(br == null)
                 throw e;
@@ -72,8 +62,8 @@ public class TextParser implements AppointmentBookParser<AppointmentBook> {
                     split = appt.beginTime.split(" ");
                     if(split[2].equals("am") || split[2].equals("pm"))
                     {
-         //               proj.parseDates(split[0]);
-          //              proj.parseTimes(split[1]);
+                        proj.parseDates(split[0]);
+                        proj.parseTimes(split[1]);
                         appt.setStartOfAppointment(line);
                         i = 2;
                     }
@@ -87,8 +77,8 @@ public class TextParser implements AppointmentBookParser<AppointmentBook> {
                     appt.endTime = line;
                     split = appt.endTime.split(" ");
                     if(split[2].equals("am") || split[2].equals("pm")) {
-           //             proj.parseDates(split[0]);
-            //            proj.parseTimes(split[1]);
+                        proj.parseDates(split[0]);
+                        proj.parseTimes(split[1]);
                         appt.setEndOfAppointment(line);
                         apptbook.addAppointment(appt);
                         i = 0;
