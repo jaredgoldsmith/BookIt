@@ -4,44 +4,80 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/notebook"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
 
+   <!-- <LinearLayout
+        android:layout_width="246dp"
+        android:layout_height="304dp"
+        android:background="#000"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.522">
+-->
 
     <Button
         android:id="@+id/launch_add_appointment"
-        android:layout_width="195dp"
-        android:layout_height="56dp"
+        android:layout_width="165dp"
+        android:layout_height="61dp"
+        android:background="@drawable/round_button"
         android:text="@string/add_appointment"
+        app:backgroundTint="#000"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.518"
+        app:layout_constraintHorizontal_bias="0.548"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.391" />
+        app:layout_constraintVertical_bias="0.325"
 
+        />
 
     <Button
         android:id="@+id/launch_display"
-        android:layout_width="192dp"
-        android:layout_height="52dp"
+        android:layout_width="165dp"
+        android:layout_height="61dp"
+        android:background="@drawable/round_button"
         android:text="@string/display_book"
+        app:backgroundTint="#000"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.548"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.499" />
+        app:layout_constraintVertical_bias="0.471" />
 
     <Button
         android:id="@+id/launch_search_appointments"
-        android:layout_width="200dp"
+        android:layout_width="165dp"
         android:layout_height="61dp"
+        android:background="@drawable/round_button"
         android:text="@string/search_appointments"
+        app:backgroundTint="#000"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.504"
+        app:layout_constraintHorizontal_bias="0.548"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.609" />
+        app:layout_constraintVertical_bias="0.614" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="238dp"
+        android:layout_height="73dp"
+        android:text="For your Appointments:)"
+        android:textAlignment="center"
+        android:textColor="#FFF"
+        android:textSize="26dp"
+        android:textStyle="italic"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.085" />
+    <!--  </LinearLayout>-->
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
         //NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         //appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
         //NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
-
+/*
         binding.fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -55,6 +55,8 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+
+ */
 
         //Button launchCalculator = findViewById(R.id.launch_calculator);
         Button launchAddAppointment = findViewById(R.id.launch_add_appointment);
@@ -230,9 +232,7 @@ public class MainActivity extends AppCompatActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        toast("Please use this app for organizing your appointments. You can choose \n" +
-                "to add an appointment book, display an appointment book for a particular \n" +
-                "person, or search for appointments for a specific appointment book owner");
+        toast("Greetings!");
        /* Intent launchNewIntent = new Intent(MainActivity.this,READMEActivity.class);
         startActivity(launchNewIntent);
 

@@ -34,14 +34,7 @@ public class AppointmentActivity extends AppCompatActivity {
 
     protected void sendAppointmentBack(){
         Appointment appointment = getAppointment();
-        /*Intent intent = new Intent();
-        EditText owner = findViewById(R.id.owner);
-        this.bookOwner = owner.getText().toString();
-        intent.putExtra(EXTRA_APPOINTMENT, appointment);
-        setResult(RESULT_OK, intent);
-        finish();
 
-         */
         if(appointment != null){
             toast("Successfully added appointment for " + this.bookOwner + "!\n" + appointment.toString());
         }
@@ -65,8 +58,8 @@ public class AppointmentActivity extends AppCompatActivity {
         endTime.getText().clear();
         EditText endAmPm = findViewById(R.id.endAmPm);
         endAmPm.getText().clear();
-
     }
+
     private void toast(String message) {
         Toast.makeText(AppointmentActivity.this, message, Toast.LENGTH_LONG).show();
     }
@@ -161,30 +154,16 @@ public class AppointmentActivity extends AppCompatActivity {
         }
         this.appt = appointment;
 
-        //File contextDirectory = getApplicationContext().getDataDir();
-        /*
-        EditText owner = findViewById(R.id.owner);
-        String ownerString = owner.getText().toString();
-        if(ownerString == null || ownerString.equals("")){
-            displayErrorMessage("Owner was not entered");
-            return null;
-        }
-        this.bookOwner = owner.getText().toString();
-        String fileName = this.bookOwner + ".txt";
-
-         */
-        //this.apptBook = new AppointmentBook(bookOwner);
-        //apptBook.addAppointment(this.appt);
         try {
             writeAppointmentToFile(fileName);
         }
         catch(IOException e){
             displayErrorMessage("Cannot open file");
         }
-        //File file = new File(contextDirectory, bookOwner + ".txt");
 
         return appointment;
     }
+
     private void writeAppointmentToFile(String fileName) throws IOException {
         File file = getAppointmentFile(fileName);
 
@@ -207,27 +186,12 @@ public class AppointmentActivity extends AppCompatActivity {
             TextDumper dumper = new TextDumper(file);
             dumper.dump(this.apptBook);
         }
-        /*
-        try (
-                //PrintWriter pw = new PrintWriter(new FileWriter(sumsFile))
-        //        TextDumper dumper = new TextDumper(fileName);
-        ) {
-            //for (int i = 0; i < this.sums.getCount(); i++) {
-            //    Double sum = this.sums.getItem(i);
-            //    pw.println(sum);
-            //}
-            //pw.println(this.appt.description);
-            //pw.flush();
-        }
-
-         */
     }
+
     @NonNull
     private File getAppointmentFile(String fileName) {
         File contextDirectory = getApplicationContext().getDataDir();
-        //File sumsFile =
         return new File(contextDirectory, fileName);
-        //return sumsFile;
     }
 
     private void displayErrorMessage(String message) {
