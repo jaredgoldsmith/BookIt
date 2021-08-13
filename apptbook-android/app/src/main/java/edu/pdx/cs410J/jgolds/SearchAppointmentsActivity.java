@@ -122,6 +122,15 @@ public class SearchAppointmentsActivity extends AppCompatActivity {
             return;
         }
         this.searchEndTime = endDateString + " " + endTimeString + " " + endAmPmString;
+        Appointment appointment = new Appointment();
+        appointment.addBeginTime(startDateString,startTimeString,startAmPmString);
+        appointment.addEndTime(endDateString,endTimeString,endAmPmString);
+        appointment.addEndTime(endDate.getText().toString(),endTime.getText().toString(),endAmPm.getText().toString());
+        Long difference = appointment.endOfAppointment.getTime() - appointment.startOfAppointment.getTime();
+        if(difference < 0){
+            displayErrorMessage("The end of the search timeframe cannot be before the start");
+            return;
+        }
         //File contextDirectory = getApplicationContext().getDataDir();
         //this.apptBook = new AppointmentBook(bookOwner);
         //apptBook.addAppointment(this.appt);

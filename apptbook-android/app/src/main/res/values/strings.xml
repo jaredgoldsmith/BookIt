@@ -17,7 +17,7 @@
     <string name="owner">Owner:</string>
     <string name="description">Description:</string>
     <string name="ex_12_25_2020">ex. 12/25/2020</string>
-    <string name="_12_33">12:33</string>
+    <string name="_12_33">ex. 12:33</string>
     <string name="am_pm">am/pm</string>
     <string name="submit">Submit</string>
     <string name="return_to_main">return to main</string>
@@ -25,4 +25,6 @@
     <string name="search_appointments">Search Appointments</string>
     <string name="display_book">Display Book</string>
     <string name="readme">README</string>
+    <string name="_3_5_2021">ex. 3/5/2021</string>
+    <string name="_9_06">ex. 9:06</string>
 </resources>
